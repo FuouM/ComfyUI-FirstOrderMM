@@ -9,6 +9,12 @@ https://github.com/AliaksandrSiarohin/first-order-model
 
 ![FOMM Workflow](workflow.png)
 
+
+
+https://github.com/FuouM/ComfyUI-FirstOrderMM/assets/57849916/36833a94-67f9-4dd9-b79b-181f86e83bfe
+
+
+
 ## Arguments
 * `relative_movement`: Relative keypoint displacement (Inherit object proporions from the video)
 * `relative_jacobian`: No idea what this does, but usually == `relative_movement`
