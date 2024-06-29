@@ -1,3 +1,10 @@
+"""
+@author: Fuou Marinas
+@title: ComfyUI-FirstOrderMM
+@nickname: FOMM
+@description: Run First Order Motion Model for Image Animation in ComfyUI.
+"""
+
 from pathlib import Path
 
 import torch
