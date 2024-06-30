@@ -3,6 +3,10 @@ A ComfyUI-native node to run First Order Motion Model for Image Animation
 
 https://github.com/AliaksandrSiarohin/first-order-model
 
+Now supports Face Swapping using Motion Supervised co-part Segmentation
+
+https://github.com/AliaksandrSiarohin/motion-cosegmentation
+
 ## Workflow:
 
 [FOMM.json](FOMM.json)
