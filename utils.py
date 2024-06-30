@@ -120,7 +120,7 @@ def tensor_to_numpy(tensor):
     return tensor.squeeze(0).permute(1, 2, 0).cpu().numpy()
 
 
-def find_best_frame(source_image, driving_video: list, cpu=False) -> int:
+def find_best_frame(source_image, driving_video, cpu=False) -> int:
     if not face_alignment_available:
         print("Face Alignment module were not found. Best frame set to 0.")
         return 0
@@ -139,7 +139,7 @@ def find_best_frame(source_image, driving_video: list, cpu=False) -> int:
     norm = float("inf")
     frame_num = 0
 
-    num_frames = driving_video.shape[1]
+    num_frames = driving_video.shape[2]
 
     for i in tqdm(range(num_frames)):
         # Extract single frame from driving video
