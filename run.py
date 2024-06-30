@@ -6,16 +6,27 @@
 """
 
 from pathlib import Path
-
 import torch
 
-from .constants import default_model_name, supported_model_names, config_folder
+from .fomm_inference import inference, inference_best_frame
+from .fomm_loader import load_checkpoint
+from .partswap_inference import partswap_inference
+from .partswap_loader import load_partswap_checkpoint
+
+from .constants import (
+    config_folder,
+    default_model_name,
+    default_partswap_model_name,
+    partswap_model_config_dict,
+    partswap_model_names,
+    supported_model_names,
+)
+from .seg_viz import visualize_frame
 from .utils import (
+    build_seg_arguments,
     get_config_path,
     get_model_file_name,
-    inference,
-    inference_best_frame,
-    load_checkpoint,
+    get_partswap_model_file_name,
     out_video,
     reshape_image,
 )
@@ -67,8 +78,8 @@ class FOMM_Runner:
 
     def todo(
         self,
-        source_image: torch.Tensor,
-        driving_video_input: torch.Tensor,
+        source_image,
+        driving_video_input,
         model_name: str,
         frame_rate: float,
         relative_movement: bool,
@@ -119,74 +130,18 @@ class FOMM_Runner:
         )
 
 
-from .constants import partswap_model_config_dict, default_partswap_model_name
-from .part_swap import (
-    get_partswap_model_file_name,
-    load_partswap_checkpoint,
-    partswap_inference,
-    visualize_frame,
-)
-
-
 def serialize_integers(int_list):
     return "_".join(map(str, int_list))
 
 
 def deserialize_integers(int_string):
-    return list(map(int, int_string.split('_')))
+    return list(map(int, int_string.split("_")))
 
 
 class FOMM_Seg10Chooser:
     @classmethod
     def INPUT_TYPES(s):
-        return {
-            "required": {
-                "m_0_background": (
-                    "BOOLEAN",
-                    {"default": False},
-                ),
-                "m_1_lf_ear": (
-                    "BOOLEAN",
-                    {"default": True},
-                ),
-                "m_2_mouth": (
-                    "BOOLEAN",
-                    {"default": True},
-                ),
-                "m_3_lf_fr_head": (
-                    "BOOLEAN",
-                    {"default": True},
-                ),
-                "m_4_rt_ear": (
-                    "BOOLEAN",
-                    {"default": True},
-                ),
-                "m_5_frnt_face": (
-                    "BOOLEAN",
-                    {"default": True},
-                ),
-                "m_6_lt_cheek": (
-                    "BOOLEAN",
-                    {"default": True},
-                ),
-                "m_7_eyes": (
-                    "BOOLEAN",
-                    {"default": True},
-                ),
-                "m_8_rt_fr_head": (
-                    "BOOLEAN",
-                    {"default": True},
-                ),
-                "m_9_shoulder": (
-                    "BOOLEAN",
-                    {"default": True},
-                ),
-                "m_10_hair_top": (
-                    "BOOLEAN",
-                    {"default": True},
-                ),
-            },
-        }
+        return build_seg_arguments("vox-10segments")
 
     RETURN_TYPES = ("STRING",)
 
@@ -195,41 +150,12 @@ class FOMM_Seg10Chooser:
     FUNCTION = "todo"
     CATEGORY = "FirstOrderMM"
 
-    def todo(
-        self,
-        m_0_background: bool,
-        m_1_lf_ear: bool,
-        m_2_mouth: bool,
-        m_3_lf_fr_head: bool,
-        m_4_rt_ear: bool,
-        m_5_frnt_face: bool,
-        m_6_lt_cheek: bool,
-        m_7_eyes: bool,
-        m_8_rt_fr_head: bool,
-        m_9_shoulder: bool,
-        m_10_hair_top: bool,
-    ):
-        seg_list = []
-        segments = [
-            m_0_background,
-            m_1_lf_ear,
-            m_2_mouth,
-            m_3_lf_fr_head,
-            m_4_rt_ear,
-            m_5_frnt_face,
-            m_6_lt_cheek,
-            m_7_eyes,
-            m_8_rt_fr_head,
-            m_9_shoulder,
-            m_10_hair_top,
-        ]
-
-        for i, seg in enumerate(segments):
-            print(f"Segment {i}: {seg}, Type: {type(seg)}, Truthy: {bool(seg)}")
-            if seg:
-                seg_list.append(i)
+    def todo(self, **args):
+        print(args)
+        assert len(args) == 11, f"Expected 11 arguments, got {len(args)}"
+        segments = list(args.values())
+        seg_list = [i for i, seg in enumerate(segments) if seg]
         seg_list = serialize_integers(seg_list)
-        print("Final seg_list:", seg_list)
         return (seg_list,)
 
 
@@ -241,7 +167,7 @@ class FOMM_Partswap:
                 "source_image": ("IMAGE",),
                 "driving_video_input": ("IMAGE",),
                 "model_name": (
-                    list(partswap_model_config_dict.keys()),
+                    partswap_model_names,
                     {"default": default_partswap_model_name},
                 ),
                 "frame_rate": ("FLOAT", {"default": 30.0}),
@@ -340,14 +266,14 @@ class FOMM_Partswap:
         )
 
 
-NODE_CLASS_MAPPINGS = {
-    "FOMM_Runner": FOMM_Runner,
-    "FOMM_Partswap": FOMM_Partswap,
-    "FOMM_Seg10Chooser": FOMM_Seg10Chooser,
-}
+# NODE_CLASS_MAPPINGS = {
+#     "FOMM_Runner": FOMM_Runner,
+#     "FOMM_Partswap": FOMM_Partswap,
+#     "FOMM_Seg10Chooser": FOMM_Seg10Chooser,
+# }
 
-NODE_DISPLAY_NAME_MAPPINGS = {
-    "FOMM_Runner": "FOMM Runner",
-    "FOMM_Partswap": "FOMM Partswap",
-    "FOMM_Seg10Chooser": "FOMM_Seg10Chooser",
-}
+# NODE_DISPLAY_NAME_MAPPINGS = {
+#     "FOMM_Runner": "FOMM Runner",
+#     "FOMM_Partswap": "FOMM Partswap",
+#     "FOMM_Seg10Chooser": "FOMM_Seg10Chooser",
+# }
