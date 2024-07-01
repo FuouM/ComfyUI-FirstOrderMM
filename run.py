@@ -14,7 +14,6 @@ from .constants import (
     default_model_name,
     default_partswap_model_name,
     face_parser_checkpoint_name,
-    partswap_face_parser_enforce_models,
     partswap_fomm_model_names,
     partswap_model_config_dict,
     partswap_model_length_dict,

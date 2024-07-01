@@ -28,7 +28,7 @@ https://github.com/FuouM/ComfyUI-FirstOrderMM/assets/57849916/36833a94-67f9-4dd9
 ### FOMM
 
 * `relative_movement`: Relative keypoint displacement (Inherit object proporions from the video)
-* `relative_jacobian`: No idea what this does, but usually == `relative_movement`
+* `relative_jacobian`: Only taken into effect when `relative_movement` is on, must also be on to avoid heavy deformation of the face (in a freaky way)
 * `adapt_movement_scale`: If disabled, will heavily distort the source face to match the driving face
 * `find_best_frame`: Find driving frame that best match the source. Split the batch into two halves, with the first half reversed. Gives mixed results. Needs to install `face-alignment` library.
 
