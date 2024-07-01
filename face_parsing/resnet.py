@@ -1,9 +1,7 @@
 import torch.nn as nn
 import torch.nn.functional as F
-import torch.utils.model_zoo as modelzoo
 import torch
 from pathlib import Path
-
 
 
 def conv3x3(in_planes, out_planes, stride=1):
@@ -48,7 +46,6 @@ def create_layer_basic(in_chan, out_chan, bnum, stride=1):
     for i in range(bnum - 1):
         layers.append(BasicBlock(out_chan, out_chan, stride=1))
     return nn.Sequential(*layers)
-
 
 
 class Resnet18(nn.Module):

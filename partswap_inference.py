@@ -17,6 +17,7 @@ def face_parse_seg(
     seg = F.interpolate(seg, size=out_size)
     return seg
 
+
 def partswap_inference(
     swap_indices: list[int],
     source_image,
