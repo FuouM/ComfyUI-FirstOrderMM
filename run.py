@@ -9,13 +9,28 @@ from pathlib import Path
 
 import torch
 
-from .constants import default_model_name, supported_model_names
+from .constants import (
+    config_folder,
+    default_model_name,
+    default_partswap_model_name,
+    face_parser_checkpoint_name,
+    partswap_fomm_model_names,
+    partswap_model_config_dict,
+    partswap_model_length_dict,
+    partswap_model_names,
+    supported_model_names,
+)
+from .face_parsing.face_parsing_loader import load_face_parser_model
+from .fomm_inference import inference, inference_best_frame
+from .fomm_loader import load_checkpoint
+from .partswap_inference import partswap_inference
+from .partswap_loader import load_partswap_checkpoint
+from .seg_viz import visualize_frame
 from .utils import (
+    build_seg_arguments,
     get_config_path,
     get_model_file_name,
-    inference,
-    inference_best_frame,
-    load_checkpoint,
+    get_partswap_model_file_name,
     out_video,
     reshape_image,
 )
@@ -67,8 +82,8 @@ class FOMM_Runner:
 
     def todo(
         self,
-        source_image: torch.Tensor,
-        driving_video_input: torch.Tensor,
+        source_image,
+        driving_video_input,
         model_name: str,
         frame_rate: float,
         relative_movement: bool,
@@ -119,10 +134,213 @@ class FOMM_Runner:
         )
 
 
-NODE_CLASS_MAPPINGS = {
-    "FOMM_Runner": FOMM_Runner,
-}
+class FOMM_Seg5Chooser:
+    @classmethod
+    def INPUT_TYPES(s):
+        return build_seg_arguments("vox-5segments")
 
-NODE_DISPLAY_NAME_MAPPINGS = {
-    "FOMM_Runner": "FOMM Runner",
-}
+    RETURN_TYPES = ("STRING",)
+
+    RETURN_NAMES = ("chosen_seg_indices",)
+
+    FUNCTION = "todo"
+    CATEGORY = "FirstOrderMM"
+
+    def todo(self, **args):
+        print(args)
+        assert len(args) == 6, f"Expected 6 arguments, got {len(args)}"
+        segments = list(args.values())
+        seg_list = [i for i, seg in enumerate(segments) if seg]
+        seg_list = serialize_integers(seg_list)
+        return (seg_list,)
+
+
+class FOMM_Seg10Chooser:
+    @classmethod
+    def INPUT_TYPES(s):
+        return build_seg_arguments("vox-10segments")
+
+    RETURN_TYPES = ("STRING",)
+
+    RETURN_NAMES = ("chosen_seg_indices",)
+
+    FUNCTION = "todo"
+    CATEGORY = "FirstOrderMM"
+
+    def todo(self, **args):
+        print(args)
+        assert len(args) == 11, f"Expected 11 arguments, got {len(args)}"
+        segments = list(args.values())
+        seg_list = [i for i, seg in enumerate(segments) if seg]
+        seg_list = serialize_integers(seg_list)
+        return (seg_list,)
+
+
+class FOMM_Seg15Chooser:
+    @classmethod
+    def INPUT_TYPES(s):
+        return build_seg_arguments("vox-15segments")
+
+    RETURN_TYPES = ("STRING",)
+
+    RETURN_NAMES = ("chosen_seg_indices",)
+
+    FUNCTION = "todo"
+    CATEGORY = "FirstOrderMM"
+
+    def todo(self, **args):
+        print(args)
+        assert len(args) == 16, f"Expected 16 arguments, got {len(args)}"
+        segments = list(args.values())
+        seg_list = [i for i, seg in enumerate(segments) if seg]
+        seg_list = serialize_integers(seg_list)
+        return (seg_list,)
+
+
+class FOMM_Partswap:
+    @classmethod
+    def INPUT_TYPES(s):
+        return {
+            "required": {
+                "source_image": ("IMAGE",),
+                "driving_video_input": ("IMAGE",),
+                "model_name": (
+                    partswap_model_names,
+                    {"default": default_partswap_model_name},
+                ),
+                "frame_rate": ("FLOAT", {"default": 30.0}),
+                "blend_scale": (
+                    "FLOAT",
+                    {"default": 1.0, "min": 0.6, "max": 1.0, "step": 0.01},
+                ),
+                "use_source_seg": (
+                    "BOOLEAN",
+                    {"default": True},
+                ),
+                "hard_edges": (
+                    "BOOLEAN",
+                    {"default": False},
+                ),
+                "use_face_parser": (
+                    "BOOLEAN",
+                    {"default": False},
+                ),
+                "chosen_seg_indices": ("STRING", {}),
+                "viz_alpha": (
+                    "FLOAT",
+                    {"default": 0.6, "min": 0.0, "max": 1.0, "step": 0.1},
+                ),
+            },
+            "optional": {"audio": ("VHS_AUDIO",)},
+        }
+
+    RETURN_TYPES = (
+        "IMAGE",
+        "IMAGE",
+        "IMAGE",
+        "VHS_AUDIO",
+        "FLOAT",
+    )
+    RETURN_NAMES = (
+        "seg_src_viz",
+        "seg_tgt_viz",
+        "images",
+        "audio",
+        "frame_rate",
+    )
+    FUNCTION = "todo"
+    CATEGORY = "FirstOrderMM"
+
+    def todo(
+        self,
+        source_image: torch.Tensor,
+        driving_video_input: torch.Tensor,
+        model_name: str,
+        frame_rate: float,
+        blend_scale: float,
+        use_source_seg: bool,
+        hard_edges: bool,
+        use_face_parser: bool,
+        chosen_seg_indices: str,
+        viz_alpha: float,
+        audio=None,
+    ):
+        print(f"{type(source_image)=}")
+        print(f"{type(driving_video_input)=}")
+        print(f"{source_image.shape=}")
+        print(f"{driving_video_input.shape=}")
+        print(f"{type(audio)=}")
+        print(base_dir)
+
+        config_path = (
+            f"{base_dir}/{config_folder}/{partswap_model_config_dict[model_name]}"
+        )
+        checkpoint_path = f"{base_dir}/{get_partswap_model_file_name(model_name)}"
+
+        source_image = reshape_image(source_image, (256, 256))
+        driving_video_org = reshape_image(driving_video_input, (256, 256))
+        driving_video = driving_video_org.unsqueeze(0).permute(0, 2, 1, 3, 4)
+
+        use_fomm = False
+        if model_name in partswap_fomm_model_names:
+            use_fomm = True
+
+        reconstruction_module, segmentation_module = load_partswap_checkpoint(
+            config_path, checkpoint_path, blend_scale, use_fomm=use_fomm
+        )
+
+        face_parser_model = None
+        # if model_name in partswap_face_parser_enforce_models:
+        #     assert use_face_parser, "Special supervised model, requires face_parser"
+        if use_face_parser:
+            face_parser_model = load_face_parser_model(
+                base_dir, face_parser_checkpoint_name
+            )
+            if face_parser_model is not None:
+                face_parser_model.cuda()
+                face_parser_model.eval()
+
+        print(f"Chosen {chosen_seg_indices}")
+        swap_indices = deserialize_integers(chosen_seg_indices)
+        swap_indices = [
+            x for x in swap_indices if x < partswap_model_length_dict[model_name]
+        ]
+        print(f"Swapping {swap_indices}")
+
+        params = {
+            "swap_indices": swap_indices,
+            "source_image": source_image,
+            "target_video": driving_video,
+            "reconstruction_module": reconstruction_module,
+            "segmentation_module": segmentation_module,
+            "use_source_seg": use_source_seg,
+            "face_parser_model": face_parser_model,
+            "hard_edges": hard_edges,
+        }
+
+        seg_source, seg_targets, predictions = partswap_inference(**params)
+
+        seg_src_viz = visualize_frame(source_image, seg_source, alpha=viz_alpha)
+        seg_tgt_viz = visualize_frame(
+            driving_video_org[0], seg_targets[0], alpha=viz_alpha
+        )
+
+        output_images = out_video(predictions)
+
+        del face_parser_model
+
+        return (
+            seg_src_viz,
+            seg_tgt_viz,
+            output_images,
+            audio,
+            frame_rate,
+        )
+
+
+def serialize_integers(int_list):
+    return "_".join(map(str, int_list))
+
+
+def deserialize_integers(int_string):
+    return list(map(int, int_string.split("_")))
