@@ -21,22 +21,28 @@ config_suffix = "256.yaml"
 config_folder = "config"
 checkpoint_folder = "checkpoints"
 
+face_parser_checkpoint_name = "79999_iter.pth"
+
 partswap_model_config_dict = {
     "vox-5segments": "vox-256-sem-5segments.yaml",
     "vox-10segments": "vox-256-sem-10segments.yaml",
     "vox-15segments": "vox-256-sem-15segments.yaml",
     "vox-cpk": "vox-256-sem-10segments.yaml",
     "vox-adv-cpk": "vox-256-sem-10segments.yaml",
+    "vox-first-order": "vox-256-sem-10segments.yaml",
 }
 
-partswap_fomm_model_names = ["vox-cpk", "vox-adv-cpk"]
+partswap_face_parser_enforce_models = ["vox-first-order"]
+
+partswap_fomm_model_names = ["vox-cpk", "vox-adv-cpk", "vox-first-order"]
 
 partswap_model_length_dict = {
     "vox-5segments": 6,
     "vox-10segments": 11,
-    "vox-15segments": 15,
-    "vox-cpk": 19,
-    "vox-adv-cpk": 19,
+    "vox-15segments": 16,
+    "vox-cpk": 11,
+    "vox-adv-cpk": 11,
+    "vox-first-order": 11,
 }
 
 partswap_model_names = list(partswap_model_config_dict.keys())

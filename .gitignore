@@ -3,6 +3,8 @@
 checkpoints/*
 !checkpoints/place_checkpoints_here.txt
 
+face_parsing/*.pth
+!face_parsing/put_model_safetensors_config_json_here.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -55,3 +55,5 @@ place_checkpoints_here.txt
 vox-adv-cpk.pth.tar
 vox-cpk.pth.tar
 ```
+
+resnet18_url = "https://download.pytorch.org/models/resnet18-5c106cde.pth"

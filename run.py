@@ -18,6 +18,8 @@ from .constants import (
     partswap_model_length_dict,
     partswap_model_names,
     supported_model_names,
+    face_parser_checkpoint_name,
+    partswap_face_parser_enforce_models
 )
 from .fomm_inference import inference, inference_best_frame
 from .fomm_loader import load_checkpoint
@@ -32,6 +34,7 @@ from .utils import (
     out_video,
     reshape_image,
 )
+from .face_parsing.face_parsing_loader import load_face_parser_model
 
 base_dir = Path(__file__).resolve().parent
 
@@ -219,6 +222,10 @@ class FOMM_Partswap:
                     "BOOLEAN",
                     {"default": False},
                 ),
+                "use_face_parser": (
+                    "BOOLEAN",
+                    {"default": False},
+                ),                
                 "chosen_seg_indices": ("STRING", {}),
                 "viz_alpha": (
                     "FLOAT",
@@ -254,6 +261,7 @@ class FOMM_Partswap:
         blend_scale: float,
         use_source_seg: bool,
         hard_edges: bool,
+        use_face_parser: bool,
         chosen_seg_indices: str,
         viz_alpha: float,
         audio=None,
@@ -281,9 +289,18 @@ class FOMM_Partswap:
         reconstruction_module, segmentation_module = load_partswap_checkpoint(
             config_path, checkpoint_path, blend_scale, use_fomm=use_fomm
         )
+        
+        face_parser_model = None
+        if model_name in partswap_face_parser_enforce_models:
+            assert use_face_parser, "Special supervised model, requires face_parser"
+        if use_face_parser:
+            face_parser_model = load_face_parser_model(base_dir, face_parser_checkpoint_name)
+            face_parser_model.cuda()
+            face_parser_model.eval()
+        
         print(f"Chosen {chosen_seg_indices}")
         swap_indices = deserialize_integers(chosen_seg_indices)
-        swap_indices = swap_indices[: partswap_model_length_dict[model_name]]
+        swap_indices = [x for x in swap_indices if x < partswap_model_length_dict[model_name]]
         print(f"Swapping {swap_indices}")
 
         params = {
@@ -293,6 +310,7 @@ class FOMM_Partswap:
             "reconstruction_module": reconstruction_module,
             "segmentation_module": segmentation_module,
             "use_source_seg": use_source_seg,
+            "face_parser_model": face_parser_model,
             "hard_edges": hard_edges,
         }
 
@@ -305,6 +323,8 @@ class FOMM_Partswap:
 
         output_images = out_video(predictions)
 
+        del face_parser_model
+        
         return (
             seg_src_viz,
             seg_tgt_viz,
