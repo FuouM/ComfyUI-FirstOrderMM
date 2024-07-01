@@ -20,6 +20,7 @@ from .constants import (
     partswap_model_config_dict,
     partswap_model_names,
     supported_model_names,
+    partswap_model_length_dict,
 )
 from .seg_viz import visualize_frame
 from .utils import (
@@ -130,12 +131,25 @@ class FOMM_Runner:
         )
 
 
-def serialize_integers(int_list):
-    return "_".join(map(str, int_list))
+class FOMM_Seg5Chooser:
+    @classmethod
+    def INPUT_TYPES(s):
+        return build_seg_arguments("vox-5segments")
 
+    RETURN_TYPES = ("STRING",)
 
-def deserialize_integers(int_string):
-    return list(map(int, int_string.split("_")))
+    RETURN_NAMES = ("chosen_seg_indices",)
+
+    FUNCTION = "todo"
+    CATEGORY = "FirstOrderMM"
+
+    def todo(self, **args):
+        print(args)
+        assert len(args) == 6, f"Expected 6 arguments, got {len(args)}"
+        segments = list(args.values())
+        seg_list = [i for i, seg in enumerate(segments) if seg]
+        seg_list = serialize_integers(seg_list)
+        return (seg_list,)
 
 
 class FOMM_Seg10Chooser:
@@ -153,6 +167,27 @@ class FOMM_Seg10Chooser:
     def todo(self, **args):
         print(args)
         assert len(args) == 11, f"Expected 11 arguments, got {len(args)}"
+        segments = list(args.values())
+        seg_list = [i for i, seg in enumerate(segments) if seg]
+        seg_list = serialize_integers(seg_list)
+        return (seg_list,)
+
+
+class FOMM_Seg15Chooser:
+    @classmethod
+    def INPUT_TYPES(s):
+        return build_seg_arguments("vox-15segments")
+
+    RETURN_TYPES = ("STRING",)
+
+    RETURN_NAMES = ("chosen_seg_indices",)
+
+    FUNCTION = "todo"
+    CATEGORY = "FirstOrderMM"
+
+    def todo(self, **args):
+        print(args)
+        assert len(args) == 16, f"Expected 16 arguments, got {len(args)}"
         segments = list(args.values())
         seg_list = [i for i, seg in enumerate(segments) if seg]
         seg_list = serialize_integers(seg_list)
@@ -184,6 +219,10 @@ class FOMM_Partswap:
                     {"default": False},
                 ),
                 "chosen_seg_indices": ("STRING", {}),
+                "viz_alpha": (
+                    "FLOAT",
+                    {"default": 0.6, "min": 0.0, "max": 1.0, "step": 0.1},
+                ),
             },
             "optional": {"audio": ("VHS_AUDIO",)},
         }
@@ -215,6 +254,7 @@ class FOMM_Partswap:
         use_source_seg: bool,
         hard_edges: bool,
         chosen_seg_indices: str,
+        viz_alpha: float,
         audio=None,
     ):
         print(f"{type(source_image)=}")
@@ -238,6 +278,7 @@ class FOMM_Partswap:
         )
         print(f"Chosen {chosen_seg_indices}")
         swap_indices = deserialize_integers(chosen_seg_indices)
+        swap_indices = swap_indices[: partswap_model_length_dict[model_name]]
         print(f"Swapping {swap_indices}")
 
         params = {
@@ -252,8 +293,8 @@ class FOMM_Partswap:
 
         seg_source, seg_targets, predictions = partswap_inference(**params)
 
-        seg_src_viz = visualize_frame(source_image, seg_source)
-        seg_tgt_viz = visualize_frame(driving_video_org[0], seg_targets[0])
+        seg_src_viz = visualize_frame(source_image, seg_source, alpha=viz_alpha)
+        seg_tgt_viz = visualize_frame(driving_video_org[0], seg_targets[0], alpha=viz_alpha)
 
         output_images = out_video(predictions)
 
@@ -266,14 +307,9 @@ class FOMM_Partswap:
         )
 
 
-# NODE_CLASS_MAPPINGS = {
-#     "FOMM_Runner": FOMM_Runner,
-#     "FOMM_Partswap": FOMM_Partswap,
-#     "FOMM_Seg10Chooser": FOMM_Seg10Chooser,
-# }
+def serialize_integers(int_list):
+    return "_".join(map(str, int_list))
 
-# NODE_DISPLAY_NAME_MAPPINGS = {
-#     "FOMM_Runner": "FOMM Runner",
-#     "FOMM_Partswap": "FOMM Partswap",
-#     "FOMM_Seg10Chooser": "FOMM_Seg10Chooser",
-# }
+
+def deserialize_integers(int_string):
+    return list(map(int, int_string.split("_")))
