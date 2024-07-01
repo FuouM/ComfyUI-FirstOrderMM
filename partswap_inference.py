@@ -38,7 +38,7 @@ def partswap_inference(
             print("Using GPU")
 
         seg_source = segmentation_module(source_image)
-        print(f"{seg_source['segmentation'].shape}")
+        # print(f"{seg_source['segmentation'].shape}")
 
         num_frames = target_video.shape[2]
         pbar = ProgressBar(num_frames)
