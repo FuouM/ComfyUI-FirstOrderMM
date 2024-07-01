@@ -9,13 +9,15 @@ https://github.com/AliaksandrSiarohin/motion-cosegmentation
 
 ## Workflow:
 
+
+https://github.com/FuouM/ComfyUI-FirstOrderMM/assets/57849916/e8adca97-b53c-48ce-a211-f336dbf7d7bc
+
+
 ### FOMM
 
 [FOMM.json](FOMM.json)
 
 ![FOMM Workflow](workflow.png)
-
-https://github.com/FuouM/ComfyUI-FirstOrderMM/assets/57849916/36833a94-67f9-4dd9-b79b-181f86e83bfe
 
 ### Part Swap
 
