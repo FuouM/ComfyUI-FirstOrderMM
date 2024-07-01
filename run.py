@@ -212,7 +212,7 @@ class FOMM_Partswap:
                 "frame_rate": ("FLOAT", {"default": 30.0}),
                 "blend_scale": (
                     "FLOAT",
-                    {"default": 1.0, "min": 0.0, "max": 1.0, "step": 0.1},
+                    {"default": 1.0, "min": 0.6, "max": 1.0, "step": 0.01},
                 ),
                 "use_source_seg": (
                     "BOOLEAN",
@@ -291,14 +291,15 @@ class FOMM_Partswap:
         )
 
         face_parser_model = None
-        if model_name in partswap_face_parser_enforce_models:
-            assert use_face_parser, "Special supervised model, requires face_parser"
+        # if model_name in partswap_face_parser_enforce_models:
+        #     assert use_face_parser, "Special supervised model, requires face_parser"
         if use_face_parser:
             face_parser_model = load_face_parser_model(
                 base_dir, face_parser_checkpoint_name
             )
-            face_parser_model.cuda()
-            face_parser_model.eval()
+            if face_parser_model is not None:
+                face_parser_model.cuda()
+                face_parser_model.eval()
 
         print(f"Chosen {chosen_seg_indices}")
         swap_indices = deserialize_integers(chosen_seg_indices)

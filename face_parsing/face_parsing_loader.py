@@ -1,13 +1,18 @@
 import torch
 import numpy as np
-
+import os
 from .face_parsing_model import BiSeNet
 
 
 def load_face_parser_model(base_dir: str, face_parser_checkpoint_name: str, cpu=False):
+    face_parser_path = f"{base_dir}/face_parsing/{face_parser_checkpoint_name}"
+    if not os.path.isfile(face_parser_path):
+        print(
+            f"{face_parser_checkpoint_name} not found, revert to no face parsing, not fatal"
+        )
+        return None
     print("Loading face_parser model")
     face_parser = BiSeNet(n_classes=19)
-    face_parser_path = f"{base_dir}/face_parsing/{face_parser_checkpoint_name}"
 
     mean = torch.Tensor(np.array([0.485, 0.456, 0.406], dtype=np.float32)).view(
         1, 3, 1, 1
