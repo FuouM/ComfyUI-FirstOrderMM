@@ -25,12 +25,18 @@ partswap_model_config_dict = {
     "vox-5segments": "vox-256-sem-5segments.yaml",
     "vox-10segments": "vox-256-sem-10segments.yaml",
     "vox-15segments": "vox-256-sem-15segments.yaml",
+    "vox-cpk": "vox-256-sem-10segments.yaml",
+    "vox-adv-cpk": "vox-256-sem-10segments.yaml",
 }
 
+partswap_fomm_model_names = ["vox-cpk", "vox-adv-cpk"]
+
 partswap_model_length_dict = {
-    "vox-5segments":  6,
+    "vox-5segments": 6,
     "vox-10segments": 11,
-    "vox-15segments": 15
+    "vox-15segments": 15,
+    "vox-cpk": 19,
+    "vox-adv-cpk": 19,
 }
 
 partswap_model_names = list(partswap_model_config_dict.keys())
@@ -57,7 +63,7 @@ seg5_segment_names = [
     "m_2_frnt_face",
     "m_3_shoulder",
     "m_4_hair",
-    "m_5_fr_head"
+    "m_5_fr_head",
 ]
 
 seg_15_segment_names = [
@@ -76,11 +82,13 @@ seg_15_segment_names = [
     "m_12_lt_ear",
     "m_13_lt_hair",
     "m_14_rt_hair",
-    "m_15_neck"
+    "m_15_neck",
 ]
 
 seg_model_dict = {
     "vox-5segments": seg5_segment_names,
     "vox-10segments": seg10_segment_names,
     "vox-15segments": seg_15_segment_names,
+    "vox": seg10_segment_names,
+    "vox-adv": seg10_segment_names,
 }

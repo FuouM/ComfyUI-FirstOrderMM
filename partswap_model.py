@@ -14,7 +14,15 @@ class PartSwapGenerator(ReconstructionModule):
             self.blend_downsample = AntiAliasInterpolation2d(1, blend_scale)
 
         if first_order_motion_model:
-            self.dense_motion_network = DenseMotionNetwork()
+            self.dense_motion_network = DenseMotionNetwork(
+                block_expansion=64,
+                num_blocks=5,
+                max_features=1024,
+                num_kp=10,
+                num_channels=3,
+                estimate_occlusion_map=True,
+                scale_factor=0.25,
+            )
         else:
             self.dense_motion_network = None
 
@@ -46,7 +54,7 @@ class PartSwapGenerator(ReconstructionModule):
             deformation = (segment_motions * mask).sum(dim=1)
             deformation = deformation.permute(0, 2, 3, 1)
         else:
-            motion = self.dense_motion_network(
+            motion = self.dense_motion_network.forward_partswap(
                 source_image=source_image, seg_target=seg_target, seg_source=seg_source
             )
             deformation = motion["deformation"]

@@ -29,13 +29,13 @@ class DenseMotionNetwork(nn.Module):
         if self.scale_factor != 1:
             self.down = AntiAliasInterpolation2d(num_channels, self.scale_factor)
 
-    def create_heatmap_representations(self, source_image, kp_driving, kp_source):
+    def create_heatmap_representations(self, source_image, kp_driving, kp_source, kp_key='value'):
         """
         Eq 6. in the paper H_k(z)
         """
         spatial_size = source_image.shape[2:]
-        gaussian_driving = kp2gaussian(kp_driving, spatial_size=spatial_size, kp_variance=self.kp_variance)
-        gaussian_source = kp2gaussian(kp_source, spatial_size=spatial_size, kp_variance=self.kp_variance)
+        gaussian_driving = kp2gaussian(kp_driving, spatial_size=spatial_size, kp_variance=self.kp_variance, kp_key=kp_key)
+        gaussian_source = kp2gaussian(kp_source, spatial_size=spatial_size, kp_variance=self.kp_variance, kp_key=kp_key)
         heatmap = gaussian_driving - gaussian_source
 
         #adding background feature
@@ -44,22 +44,22 @@ class DenseMotionNetwork(nn.Module):
         heatmap = heatmap.unsqueeze(2)
         return heatmap
 
-    def create_sparse_motions(self, source_image, kp_driving, kp_source):
+    def create_sparse_motions(self, source_image, kp_driving, kp_source, kp_key='value', jacob_key='jacobian'):
         """
         Eq 4. in the paper T_{s<-d}(z)
         """
         bs, _, h, w = source_image.shape
-        identity_grid = make_coordinate_grid((h, w), type=kp_source['value'].type())
+        identity_grid = make_coordinate_grid((h, w), type=kp_source[kp_key].type())
         identity_grid = identity_grid.view(1, 1, h, w, 2)
-        coordinate_grid = identity_grid - kp_driving['value'].view(bs, self.num_kp, 1, 1, 2)
-        if 'jacobian' in kp_driving:
-            jacobian = torch.matmul(kp_source['jacobian'], torch.inverse(kp_driving['jacobian']))
+        coordinate_grid = identity_grid - kp_driving[kp_key].view(bs, self.num_kp, 1, 1, 2)
+        if jacob_key in kp_driving:
+            jacobian = torch.matmul(kp_source[jacob_key], torch.inverse(kp_driving[jacob_key]))
             jacobian = jacobian.unsqueeze(-3).unsqueeze(-3)
             jacobian = jacobian.repeat(1, 1, h, w, 1, 1)
             coordinate_grid = torch.matmul(jacobian, coordinate_grid.unsqueeze(-1))
             coordinate_grid = coordinate_grid.squeeze(-1)
 
-        driving_to_source = coordinate_grid + kp_source['value'].view(bs, self.num_kp, 1, 1, 2)
+        driving_to_source = coordinate_grid + kp_source[kp_key].view(bs, self.num_kp, 1, 1, 2)
 
         #adding background feature
         identity_grid = identity_grid.repeat(bs, 1, 1, 1, 1)
@@ -109,5 +109,38 @@ class DenseMotionNetwork(nn.Module):
         if self.occlusion:
             occlusion_map = torch.sigmoid(self.occlusion(prediction))
             out_dict['occlusion_map'] = occlusion_map
+
+        return out_dict
+    
+    def forward_partswap(self, source_image, seg_target, seg_source):
+        if self.scale_factor != 1:
+            source_image = self.down(source_image)
+
+        bs, _, h, w = source_image.shape
+
+        out_dict = dict()
+        heatmap_representation = self.create_heatmap_representations(source_image, seg_target, seg_source, kp_key='shift')
+        sparse_motion = self.create_sparse_motions(source_image, seg_target, seg_source, kp_key='shift', jacob_key='affine')
+        deformed_source = self.create_deformed_source_image(source_image, sparse_motion)
+        out_dict['sparse_deformed'] = deformed_source
+
+        input = torch.cat([heatmap_representation, deformed_source], dim=2)
+        input = input.view(bs, -1, h, w)
+
+        prediction = self.hourglass(input)
+
+        mask = self.mask(prediction)
+        mask = F.softmax(mask, dim=1)
+        out_dict['mask'] = mask
+        mask = mask.unsqueeze(2)
+        sparse_motion = sparse_motion.permute(0, 1, 4, 2, 3)
+        deformation = (sparse_motion * mask).sum(dim=1)
+        deformation = deformation.permute(0, 2, 3, 1)
+
+        out_dict['deformation'] = deformation
+
+        if self.occlusion:
+            visibility = torch.sigmoid(self.occlusion(prediction))
+            out_dict['visibility'] = visibility
 
         return out_dict

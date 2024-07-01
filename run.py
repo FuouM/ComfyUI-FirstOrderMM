@@ -6,22 +6,23 @@
 """
 
 from pathlib import Path
-import torch
 
-from .fomm_inference import inference, inference_best_frame
-from .fomm_loader import load_checkpoint
-from .partswap_inference import partswap_inference
-from .partswap_loader import load_partswap_checkpoint
+import torch
 
 from .constants import (
     config_folder,
     default_model_name,
     default_partswap_model_name,
+    partswap_fomm_model_names,
     partswap_model_config_dict,
+    partswap_model_length_dict,
     partswap_model_names,
     supported_model_names,
-    partswap_model_length_dict,
 )
+from .fomm_inference import inference, inference_best_frame
+from .fomm_loader import load_checkpoint
+from .partswap_inference import partswap_inference
+from .partswap_loader import load_partswap_checkpoint
 from .seg_viz import visualize_frame
 from .utils import (
     build_seg_arguments,
@@ -273,8 +274,12 @@ class FOMM_Partswap:
         driving_video_org = reshape_image(driving_video_input, (256, 256))
         driving_video = driving_video_org.unsqueeze(0).permute(0, 2, 1, 3, 4)
 
+        use_fomm = False
+        if model_name in partswap_fomm_model_names:
+            use_fomm = True
+
         reconstruction_module, segmentation_module = load_partswap_checkpoint(
-            config_path, checkpoint_path, blend_scale, use_fomm=False
+            config_path, checkpoint_path, blend_scale, use_fomm=use_fomm
         )
         print(f"Chosen {chosen_seg_indices}")
         swap_indices = deserialize_integers(chosen_seg_indices)
@@ -294,7 +299,9 @@ class FOMM_Partswap:
         seg_source, seg_targets, predictions = partswap_inference(**params)
 
         seg_src_viz = visualize_frame(source_image, seg_source, alpha=viz_alpha)
-        seg_tgt_viz = visualize_frame(driving_video_org[0], seg_targets[0], alpha=viz_alpha)
+        seg_tgt_viz = visualize_frame(
+            driving_video_org[0], seg_targets[0], alpha=viz_alpha
+        )
 
         output_images = out_video(predictions)
 
