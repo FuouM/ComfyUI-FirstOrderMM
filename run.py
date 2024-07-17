@@ -64,12 +64,12 @@ class FOMM_Runner:
                     {"default": False},
                 ),  # Generate from the frame that is the most alligned with source
             },
-            "optional": {"audio": ("VHS_AUDIO",)},
+            "optional": {"audio": ("AUDIO",)},
         }
 
     RETURN_TYPES = (
         "IMAGE",
-        "VHS_AUDIO",
+        "AUDIO",
         "FLOAT",
     )
     RETURN_NAMES = (
@@ -231,14 +231,14 @@ class FOMM_Partswap:
                     {"default": 0.6, "min": 0.0, "max": 1.0, "step": 0.1},
                 ),
             },
-            "optional": {"audio": ("VHS_AUDIO",)},
+            "optional": {"audio": ("AUDIO",)},
         }
 
     RETURN_TYPES = (
         "IMAGE",
         "IMAGE",
         "IMAGE",
-        "VHS_AUDIO",
+        "AUDIO",
         "FLOAT",
     )
     RETURN_NAMES = (
