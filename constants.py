@@ -101,3 +101,9 @@ seg_model_dict = {
 
 ARTICULATE_MODEL_PATH = "articulate_module/models/vox256.pth"
 ARTICULATE_CFG_PATH = "articulate_module/config/vox256.yaml"
+
+SPLINE_MODES = ['relative', 'standard', 'avd']
+SPLINE_DEFAULT = 'relative'
+
+SPLINE_MODEL_PATH = "spline_module/models/vox.pth.tar"
+SPLINE_CFG_PATH = "spline_module/config/vox-256.yaml"

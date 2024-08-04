@@ -13,6 +13,10 @@ from .articulate_inference import articulate_inference
 from .constants import (
     ARTICULATE_CFG_PATH,
     ARTICULATE_MODEL_PATH,
+    SPLINE_CFG_PATH,
+    SPLINE_DEFAULT,
+    SPLINE_MODEL_PATH,
+    SPLINE_MODES,
     config_folder,
     default_model_name,
     default_partswap_model_name,
@@ -29,6 +33,7 @@ from .fomm_loader import load_checkpoint
 from .partswap_inference import partswap_inference
 from .partswap_loader import load_partswap_checkpoint
 from .seg_viz import visualize_frame
+from .spline_inference import spline_inference
 from .utils import (
     build_seg_arguments,
     get_config_path,
@@ -397,6 +402,82 @@ class Articulate_Runner:
         }
 
         predictions = articulate_inference(**params)
+
+        output_images = out_video(predictions)
+
+        return (
+            output_images,
+            audio,
+            frame_rate,
+        )
+
+
+class Spline_Runner:
+    @classmethod
+    def INPUT_TYPES(s):
+        return {
+            "required": {
+                "source_image": ("IMAGE",),
+                "driving_video_input": ("IMAGE",),
+                "frame_rate": ("FLOAT", {"default": 30.0}),
+                "predict_mode": (SPLINE_MODES, {"default": SPLINE_DEFAULT}),
+                "find_best_frame": (
+                    "BOOLEAN",
+                    {"default": False},
+                ),  # Generate from the frame that is the most alligned with source
+            },
+            "optional": {"audio": ("AUDIO",)},
+        }
+
+    RETURN_TYPES = (
+        "IMAGE",
+        "AUDIO",
+        "FLOAT",
+    )
+    RETURN_NAMES = (
+        "images",
+        "audio",
+        "frame_rate",
+    )
+    FUNCTION = "todo"
+    CATEGORY = "FirstOrderMM"
+
+    def todo(
+        self,
+        source_image,
+        driving_video_input,
+        frame_rate: float,
+        predict_mode: str,
+        find_best_frame: bool,
+        audio=None,
+    ):
+        print(f"{type(source_image)=}")
+        print(f"{type(driving_video_input)=}")
+        print(f"{source_image.shape=}")
+        print(f"{driving_video_input.shape=}")
+        print(f"{type(audio)=}")
+        print(base_dir)
+
+        config_path = f"{base_dir}/{SPLINE_CFG_PATH}"
+        checkpoint_path = f"{base_dir}/{SPLINE_MODEL_PATH}"
+
+        source_image = reshape_image(source_image, (256, 256))
+        driving_video = reshape_image(driving_video_input, (256, 256)).unsqueeze(0)
+        driving_video = driving_video.permute(0, 2, 1, 3, 4)
+
+        print("After reshaping")
+        print(f"{source_image.shape=}")
+        print(f"{driving_video.shape=}")
+        params = {
+            "source_image": source_image,
+            "driving_video": driving_video,
+            "config_path": config_path,
+            "checkpoint_path": checkpoint_path,
+            "predict_mode": predict_mode,
+            "find_best_frame": find_best_frame,
+        }
+
+        predictions = spline_inference(**params)
 
         output_images = out_video(predictions)
 
