@@ -9,7 +9,10 @@ from pathlib import Path
 
 import torch
 
+from .articulate_inference import articulate_inference
 from .constants import (
+    ARTICULATE_CFG_PATH,
+    ARTICULATE_MODEL_PATH,
     config_folder,
     default_model_name,
     default_partswap_model_name,
@@ -332,6 +335,72 @@ class FOMM_Partswap:
         return (
             seg_src_viz,
             seg_tgt_viz,
+            output_images,
+            audio,
+            frame_rate,
+        )
+
+
+class Articulate_Runner:
+    @classmethod
+    def INPUT_TYPES(s):
+        return {
+            "required": {
+                "source_image": ("IMAGE",),
+                "driving_video_input": ("IMAGE",),
+                "frame_rate": ("FLOAT", {"default": 30.0}),
+            },
+            "optional": {"audio": ("AUDIO",)},
+        }
+
+    RETURN_TYPES = (
+        "IMAGE",
+        "AUDIO",
+        "FLOAT",
+    )
+    RETURN_NAMES = (
+        "images",
+        "audio",
+        "frame_rate",
+    )
+    FUNCTION = "todo"
+    CATEGORY = "FirstOrderMM"
+
+    def todo(
+        self,
+        source_image: torch.Tensor,
+        driving_video_input: torch.Tensor,
+        frame_rate: float,
+        audio=None,
+    ):
+        print(f"{source_image.shape=}")
+        print(f"{driving_video_input.shape=}")
+        print(f"{type(audio)=}")
+        print(base_dir)
+
+        config_path = f"{base_dir}/{ARTICULATE_CFG_PATH}"
+        checkpoint_path = f"{base_dir}/{ARTICULATE_MODEL_PATH}"
+
+        source_image = reshape_image(source_image, (256, 256))
+        driving_video = reshape_image(driving_video_input, (256, 256)).unsqueeze(0)
+        driving_video = driving_video.permute(0, 2, 1, 3, 4)
+
+        print("After reshaping")
+        print(f"{source_image.shape=}")
+        print(f"{driving_video.shape=}")
+
+        params = {
+            "source_image": source_image,
+            "driving_video": driving_video,
+            "config_path": config_path,
+            "checkpoint_path": checkpoint_path,
+        }
+
+        predictions = articulate_inference(**params)
+
+        output_images = out_video(predictions)
+
+        return (
             output_images,
             audio,
             frame_rate,
