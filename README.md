@@ -3,19 +3,14 @@ A ComfyUI-native node to run First Order Motion Model for Image Animation
 
 https://github.com/AliaksandrSiarohin/first-order-model
 
-Now supports Face Swapping using Motion Supervised co-part Segmentation
+Now supports:
+1. Face Swapping using [Motion Supervised co-part Segmentation](https://github.com/AliaksandrSiarohin/motion-cosegmentation): 
+2. [Motion Representations for Articulated Animation](https://github.com/snap-research/articulated-animation)
+3. [Thin-Plate Spline Motion Model for Image Animation](https://github.com/yoyo-nb/thin-plate-spline-motion-model)
 
-https://github.com/AliaksandrSiarohin/motion-cosegmentation
-
-Now also supports Motion Representations for Articulated Animation
-
-https://github.com/snap-research/articulated-animation
+https://github.com/user-attachments/assets/b2948efb-3b44-440b-bff2-dde7b95a9946
 
 ## Workflow:
-
-
-https://github.com/FuouM/ComfyUI-FirstOrderMM/assets/57849916/e8adca97-b53c-48ce-a211-f336dbf7d7bc
-
 
 ### FOMM
 
@@ -34,6 +29,14 @@ https://github.com/FuouM/ComfyUI-FirstOrderMM/assets/57849916/e8adca97-b53c-48ce
 [ARTICULATE.json](workflows/ARTICULATE.json)
 
 ![Workflow Articulate](workflows/workflow_articulate.png)
+
+
+### Spline
+
+[SPLINE.json](workflows/SPLINE.json)
+
+![Workflow Spline](workflows/workflow_spline.png)
+
 
 ## Arguments
 
@@ -55,6 +58,14 @@ https://github.com/FuouM/ComfyUI-FirstOrderMM/assets/57849916/e8adca97-b53c-48ce
 ### Articulate
 
 Doesn't need any
+
+### Spline
+
+* `predict_mode`: Can be
+  * `relative`: Similar to FOMM's `relative_movement` and `adapt_movement_scale` set to True
+  * `standard`: Similar to FOMM's `adapt_movement_scale` set to False
+  * `avd`: similar to `relative`, may yield better but more "jittery/jumpy" result
+* `find_best_frame`: Same as FOMM
 
 ## Installation
 
@@ -113,4 +124,6 @@ resnet18-5c106cde.pth
 79999_iter.pth
 ```
 
-For **Articulate**, download the model from [Pre-trained checkpoints](https://github.com/snap-research/articulated-animation?tab=readme-ov-file#pre-trained-checkpoints) section and place it here: `articulate_module\models\vox256.pth`
+For **Articulate**, download the model from [Pre-trained checkpoints](https://github.com/snap-research/articulated-animation?tab=readme-ov-file#pre-trained-checkpoints) section and place it here: `articulate_module/models/vox256.pth`
+
+For **Spline**, download the model from [Pre-trained models](https://github.com/yoyo-nb/thin-plate-spline-motion-model?tab=readme-ov-file#pre-trained-models) section and place it here: `spline_module/models/vox.pth.tar`. To use `find_best_frame`, install `face-alignment`.
