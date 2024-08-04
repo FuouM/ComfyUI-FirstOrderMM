@@ -98,3 +98,6 @@ seg_model_dict = {
     "vox": seg10_segment_names,
     "vox-adv": seg10_segment_names,
 }
+
+ARTICULATE_MODEL_PATH = "articulate_module/models/vox256.pth"
+ARTICULATE_CFG_PATH = "articulate_module/config/vox256.yaml"

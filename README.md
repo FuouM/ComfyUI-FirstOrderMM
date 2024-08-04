@@ -7,6 +7,10 @@ Now supports Face Swapping using Motion Supervised co-part Segmentation
 
 https://github.com/AliaksandrSiarohin/motion-cosegmentation
 
+Now also supports Motion Representations for Articulated Animation
+
+https://github.com/snap-research/articulated-animation
+
 ## Workflow:
 
 
@@ -15,15 +19,21 @@ https://github.com/FuouM/ComfyUI-FirstOrderMM/assets/57849916/e8adca97-b53c-48ce
 
 ### FOMM
 
-[FOMM.json](FOMM.json)
+[FOMM.json](workflows/FOMM.json)
 
-![FOMM Workflow](workflow.png)
+![FOMM Workflow](workflows/workflow.png)
 
 ### Part Swap
 
-[FOMM_PARTSWAP.json](FOMM_PARTSWAP.json)
+[FOMM_PARTSWAP.json](workflows/FOMM_PARTSWAP.json)
 
-![Partswap Workflow](workflow_fomm_partswap.png)
+![Partswap Workflow](workflows/workflow_fomm_partswap.png)
+
+### Articulate
+
+[ARTICULATE.json](workflows/ARTICULATE.json)
+
+![Workflow Articulate](workflows/workflow_articulate.png)
 
 ## Arguments
 
@@ -41,6 +51,10 @@ https://github.com/FuouM/ComfyUI-FirstOrderMM/assets/57849916/e8adca97-b53c-48ce
 * `hard_edges`: Whether to make the edges hard, instead of feathering
 * `use_face_parser`: For Seg-based models, may help with cleaning up residual background (should only use `15seg` with this). TODO: Additional cleanup face_parser masks. Should definitely be used for FOMM models
 * `viz_alpha`: Opacity of the segments in the visualization
+
+### Articulate
+
+Doesn't need any
 
 ## Installation
 
@@ -98,3 +112,5 @@ face_parsing_model.py
 resnet18-5c106cde.pth
 79999_iter.pth
 ```
+
+For **Articulate**, download the model from [Pre-trained checkpoints](https://github.com/snap-research/articulated-animation?tab=readme-ov-file#pre-trained-checkpoints) section and place it here: `articulate_module\models\vox256.pth`
