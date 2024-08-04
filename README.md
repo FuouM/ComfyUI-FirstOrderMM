@@ -1,5 +1,5 @@
 # ComfyUI-FirstOrderMM
-A ComfyUI-native node to run First Order Motion Model for Image Animation
+ComfyUI-native nodes to run First Order Motion Model for Image Animation and its non-diffusion-based successors.
 
 https://github.com/AliaksandrSiarohin/first-order-model
 
@@ -7,6 +7,8 @@ Now supports:
 1. Face Swapping using [Motion Supervised co-part Segmentation](https://github.com/AliaksandrSiarohin/motion-cosegmentation): 
 2. [Motion Representations for Articulated Animation](https://github.com/snap-research/articulated-animation)
 3. [Thin-Plate Spline Motion Model for Image Animation](https://github.com/yoyo-nb/thin-plate-spline-motion-model)
+
+More will come soon
 
 https://github.com/user-attachments/assets/b2948efb-3b44-440b-bff2-dde7b95a9946
 
