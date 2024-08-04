@@ -8,12 +8,9 @@ Now supports:
 2. [Motion Representations for Articulated Animation](https://github.com/snap-research/articulated-animation)
 3. [Thin-Plate Spline Motion Model for Image Animation](https://github.com/yoyo-nb/thin-plate-spline-motion-model)
 
+https://github.com/user-attachments/assets/b2948efb-3b44-440b-bff2-dde7b95a9946
 
 ## Workflow:
-
-
-https://github.com/FuouM/ComfyUI-FirstOrderMM/assets/57849916/e8adca97-b53c-48ce-a211-f336dbf7d7bc
-
 
 ### FOMM
 
