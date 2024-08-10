@@ -99,11 +99,23 @@ seg_model_dict = {
     "vox-adv": seg10_segment_names,
 }
 
-ARTICULATE_MODEL_PATH = "articulate_module/models/vox256.pth"
-ARTICULATE_CFG_PATH = "articulate_module/config/vox256.yaml"
+ARTICULATE_MODEL_PATH = "module_articulate/models/vox256.pth"
+ARTICULATE_CFG_PATH = "module_articulate/config/vox256.yaml"
 
 SPLINE_MODES = ['relative', 'standard', 'avd']
 SPLINE_DEFAULT = 'relative'
 
-SPLINE_MODEL_PATH = "spline_module/models/vox.pth.tar"
-SPLINE_CFG_PATH = "spline_module/config/vox-256.yaml"
+SPLINE_MODEL_PATH = "module_spline/models/vox.pth.tar"
+SPLINE_CFG_PATH = "module_spline/config/vox-256.yaml"
+
+MRFA_MODEL_NAMES = ["celebvhq", "vox"]
+MRFA_MODEL_PATHS = {
+    "celebvhq": "module_mrfa/models/celebvhq.pth",
+    "vox": "module_mrfa/models/vox.pth",
+}
+MRFA_DEFAULT_MODEL = "celebvhq"
+
+MRFA_CFG_PATHS = {
+    "celebvhq": "module_mrfa/configs/celebvhq.yaml",
+    "vox": "module_mrfa/configs/vox1.yaml",
+}

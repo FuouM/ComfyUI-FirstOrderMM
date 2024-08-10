@@ -7,6 +7,7 @@ Now supports:
 1. Face Swapping using [Motion Supervised co-part Segmentation](https://github.com/AliaksandrSiarohin/motion-cosegmentation): 
 2. [Motion Representations for Articulated Animation](https://github.com/snap-research/articulated-animation)
 3. [Thin-Plate Spline Motion Model for Image Animation](https://github.com/yoyo-nb/thin-plate-spline-motion-model)
+4. [Learning Motion Refinement for Unsupervised Face Animation](https://github.com/JialeTao/MRFA/)
 
 More will come soon
 
@@ -39,6 +40,11 @@ https://github.com/user-attachments/assets/b2948efb-3b44-440b-bff2-dde7b95a9946
 
 ![Workflow Spline](workflows/workflow_spline.png)
 
+### MRFA
+
+[MRFA.json](workflows/MRFA.json)
+
+![Workflow MRFA](workflows/workflow_mrfa.png)
 
 ## Arguments
 
@@ -69,6 +75,13 @@ Doesn't need any
   * `avd`: similar to `relative`, may yield better but more "jittery/jumpy" result
 * `find_best_frame`: Same as FOMM
 
+
+### MRFA
+
+* `model_name`: `celebvhq` or `vox`, which is trained on different datasets
+* `use_relative`: Whether to use relative mode or not (absolute mode). Absolute mode is similar to FOMM's `adapt_movement_scale` set to False
+* `relative_movement`, `relative_jacobian`, `adapt_movement_scale`: Same as FOMM
+
 ## Installation
 
 1. Clone the repo to `ComfyUI/custom_nodes/`
@@ -87,13 +100,16 @@ pip install -r requirements.txt
 pip install face-alignment
 ```
 
-## Model 
+## Models
 
-FOMM currently supporting `vox` and `vox-adv`. Models can and must be manually downloaded from:
+### FOMM and Part Swap
+
+**FOMM**: `vox` and `vox-adv` from
 * [AliaksandrSiarohin/first-order-model](https://github.com/AliaksandrSiarohin/first-order-model)
 * [graphemecluster/first-order-model-demo](https://github.com/graphemecluster/first-order-model-demo)
 
-Part Swap currently supporting Seg-based models and FOMM (`vox` and `vox-adv`) models.
+**Part Swap**
+
 * `vox-5segments`
 * `vox-10segments`
 * `vox-15segments`
@@ -126,6 +142,56 @@ resnet18-5c106cde.pth
 79999_iter.pth
 ```
 
-For **Articulate**, download the model from [Pre-trained checkpoints](https://github.com/snap-research/articulated-animation?tab=readme-ov-file#pre-trained-checkpoints) section and place it here: `articulate_module/models/vox256.pth`
+### Other
 
-For **Spline**, download the model from [Pre-trained models](https://github.com/yoyo-nb/thin-plate-spline-motion-model?tab=readme-ov-file#pre-trained-models) section and place it here: `spline_module/models/vox.pth.tar`. To use `find_best_frame`, install `face-alignment`.
+| Model Arch | File Path | Source |
+|------------|-----------|--------|
+| **Articulate** | `articulate_module/models/vox256.pth` | [Articulated Animation (Pre-trained checkpoints)](https://github.com/snap-research/articulated-animation?tab=readme-ov-file#pre-trained-checkpoints) |
+| **Spline** | `spline_module/models/vox.pth.tar` | [Thin Plate Spline Motion Model (Pre-trained models)](https://github.com/yoyo-nb/thin-plate-spline-motion-model?tab=readme-ov-file#pre-trained-models) |
+| **MRFA** (celebvhq) | `mrfa_module/models/celebvhq.pth` | [MRFA (Pre-trained checkpoints)](https://github.com/JialeTao/MRFA/?tab=readme-ov-file#pretrained-models) |
+| **MRFA** (vox) | `mrfa_module/models/vox.pth` | [MRFA (Pre-trained checkpoints)](https://github.com/JialeTao/MRFA/?tab=readme-ov-file#pretrained-models) |
+
+Notes:
+- For **Spline**, to use `find_best_frame`, follow above instructions to install `face-alignment` with its models.
+
+## Credits
+
+```
+@InProceedings{Siarohin_2019_NeurIPS,
+  author={Siarohin, Aliaksandr and Lathuilière, Stéphane and Tulyakov, Sergey and Ricci, Elisa and Sebe, Nicu},
+  title={First Order Motion Model for Image Animation},
+  booktitle = {Conference on Neural Information Processing Systems (NeurIPS)},
+  month = {December},
+  year = {2019}
+}
+```
+
+```
+@InProceedings{Siarohin_2019_NeurIPS,
+  author={Siarohin, Aliaksandr and Lathuilière, Stéphane and Tulyakov, Sergey and Ricci, Elisa and Sebe, Nicu},
+  title={First Order Motion Model for Image Animation},
+  booktitle = {Conference on Neural Information Processing Systems (NeurIPS)},
+  month = {December},
+  year = {2019}
+}
+```
+
+```
+@inproceedings{siarohin2021motion,
+        author={Siarohin, Aliaksandr and Woodford, Oliver and Ren, Jian and Chai, Menglei and Tulyakov, Sergey},
+        title={Motion Representations for Articulated Animation},
+        booktitle = {CVPR},
+        year = {2021}
+}
+```
+
+```
+@inproceedings{
+tao2023learning,
+title={Learning Motion Refinement for Unsupervised Face Animation},
+author={Jiale Tao and Shuhang Gu and Wen Li and Lixin Duan},
+booktitle={Thirty-seventh Conference on Neural Information Processing Systems},
+year={2023},
+url={https://openreview.net/forum?id=m9uHv1Pxq7}
+}
+```

@@ -1,11 +1,12 @@
-import torch
 import numpy as np
+import torch
+import yaml
 from comfy.utils import ProgressBar
-from tqdm import tqdm
 from scipy.spatial import ConvexHull
+from tqdm import tqdm
+
 from .modules.generator import OcclusionAwareGenerator
 from .modules.keypoint_detector import KPDetector
-
 from .utils import tensor_to_numpy
 
 try:
@@ -23,6 +24,7 @@ def normalize_kp_best_frame(kp):
     area = np.sqrt(area)
     kp[:, :2] = kp[:, :2] / area
     return kp
+
 
 def normalize_kp(
     kp_source,
@@ -55,11 +57,12 @@ def normalize_kp(
 
     return kp_new
 
+
 def find_best_frame(source_image, driving_video: list, cpu=False) -> int:
     if not face_alignment_available:
         print("Face Alignment module were not found. Best frame set to 0.")
         return 0
-    
+
     print("Initializing Face Alignment...")
     fa = face_alignment.FaceAlignment(
         face_alignment.LandmarksType.TWO_D,
@@ -92,6 +95,7 @@ def find_best_frame(source_image, driving_video: list, cpu=False) -> int:
     print(f"Best frame: {frame_num}")
 
     return frame_num
+
 
 def inference(
     source_image,
@@ -183,3 +187,34 @@ def inference_best_frame(
     predictions.extend(predictions_first)
     predictions.extend(predictions_second)
     return predictions
+
+
+def load_checkpoint(
+    config_path: str, checkpoint_path: str, cpu=False
+) -> tuple[OcclusionAwareGenerator, KPDetector]:
+    with open(config_path) as f:
+        config = yaml.full_load(f)
+
+    generator = OcclusionAwareGenerator(
+        **config["model_params"]["generator_params"],
+        **config["model_params"]["common_params"],
+    )
+    kp_detector = KPDetector(
+        **config["model_params"]["kp_detector_params"],
+        **config["model_params"]["common_params"],
+    )
+
+    if not cpu:
+        generator.cuda()
+        kp_detector.cuda()
+        checkpoint = torch.load(checkpoint_path)
+    else:
+        checkpoint = torch.load(checkpoint_path, map_location=torch.device("cpu"))
+
+    generator.load_state_dict(checkpoint["generator"])
+    kp_detector.load_state_dict(checkpoint["kp_detector"])
+
+    generator.eval()
+    kp_detector.eval()
+
+    return generator, kp_detector
