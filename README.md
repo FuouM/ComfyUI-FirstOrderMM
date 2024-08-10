@@ -146,10 +146,10 @@ resnet18-5c106cde.pth
 
 | Model Arch | File Path | Source |
 |------------|-----------|--------|
-| **Articulate** | `articulate_module/models/vox256.pth` | [Articulated Animation (Pre-trained checkpoints)](https://github.com/snap-research/articulated-animation?tab=readme-ov-file#pre-trained-checkpoints) |
-| **Spline** | `spline_module/models/vox.pth.tar` | [Thin Plate Spline Motion Model (Pre-trained models)](https://github.com/yoyo-nb/thin-plate-spline-motion-model?tab=readme-ov-file#pre-trained-models) |
-| **MRFA** (celebvhq) | `mrfa_module/models/celebvhq.pth` | [MRFA (Pre-trained checkpoints)](https://github.com/JialeTao/MRFA/?tab=readme-ov-file#pretrained-models) |
-| **MRFA** (vox) | `mrfa_module/models/vox.pth` | [MRFA (Pre-trained checkpoints)](https://github.com/JialeTao/MRFA/?tab=readme-ov-file#pretrained-models) |
+| **Articulate** | `module_articulate/models/vox256.pth` | [Articulated Animation (Pre-trained checkpoints)](https://github.com/snap-research/articulated-animation?tab=readme-ov-file#pre-trained-checkpoints) |
+| **Spline** | `module_articulate/models/vox.pth.tar` | [Thin Plate Spline Motion Model (Pre-trained models)](https://github.com/yoyo-nb/thin-plate-spline-motion-model?tab=readme-ov-file#pre-trained-models) |
+| **MRFA** (celebvhq) | `module_mrfa/models/celebvhq.pth` | [MRFA (Pre-trained checkpoints)](https://github.com/JialeTao/MRFA/?tab=readme-ov-file#pretrained-models) |
+| **MRFA** (vox) | `module_mrfa/models/vox.pth` | [MRFA (Pre-trained checkpoints)](https://github.com/JialeTao/MRFA/?tab=readme-ov-file#pretrained-models) |
 
 Notes:
 - For **Spline**, to use `find_best_frame`, follow above instructions to install `face-alignment` with its models.
