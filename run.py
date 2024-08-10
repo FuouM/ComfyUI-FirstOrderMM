@@ -2,14 +2,13 @@
 @author: Fuou Marinas
 @title: ComfyUI-FirstOrderMM
 @nickname: FOMM
-@description: Run First Order Motion Model for Image Animation in ComfyUI.
+@description: ComfyUI-native nodes to run First Order Motion Model for Image Animation and its non-diffusion-based successors.
 """
 
 from pathlib import Path
 
 import torch
 
-from .articulate_inference import articulate_inference
 from .constants import (
     ARTICULATE_CFG_PATH,
     ARTICULATE_MODEL_PATH,
@@ -28,12 +27,11 @@ from .constants import (
     supported_model_names,
 )
 from .face_parsing.face_parsing_loader import load_face_parser_model
-from .fomm_inference import inference, inference_best_frame
-from .fomm_loader import load_checkpoint
-from .partswap_inference import partswap_inference
-from .partswap_loader import load_partswap_checkpoint
+from .inference_articulate import articulate_inference
+from .inference_fomm import inference, inference_best_frame, load_checkpoint
+from .inference_partswap import load_partswap_checkpoint, partswap_inference
+from .inference_spline import spline_inference
 from .seg_viz import visualize_frame
-from .spline_inference import spline_inference
 from .utils import (
     build_seg_arguments,
     get_config_path,

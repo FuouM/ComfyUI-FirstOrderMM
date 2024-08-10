@@ -1,5 +1,5 @@
 numpy
 torch
 scipy
-yaml
+pyyaml
 matplotlib

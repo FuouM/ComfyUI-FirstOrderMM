@@ -7,6 +7,7 @@ Now supports:
 1. Face Swapping using [Motion Supervised co-part Segmentation](https://github.com/AliaksandrSiarohin/motion-cosegmentation): 
 2. [Motion Representations for Articulated Animation](https://github.com/snap-research/articulated-animation)
 3. [Thin-Plate Spline Motion Model for Image Animation](https://github.com/yoyo-nb/thin-plate-spline-motion-model)
+4. [Learning Motion Refinement for Unsupervised Face Animation](https://github.com/JialeTao/MRFA/)
 
 More will come soon
 
@@ -69,6 +70,9 @@ Doesn't need any
   * `avd`: similar to `relative`, may yield better but more "jittery/jumpy" result
 * `find_best_frame`: Same as FOMM
 
+
+### MRFA
+
 ## Installation
 
 1. Clone the repo to `ComfyUI/custom_nodes/`
@@ -129,3 +133,5 @@ resnet18-5c106cde.pth
 For **Articulate**, download the model from [Pre-trained checkpoints](https://github.com/snap-research/articulated-animation?tab=readme-ov-file#pre-trained-checkpoints) section and place it here: `articulate_module/models/vox256.pth`
 
 For **Spline**, download the model from [Pre-trained models](https://github.com/yoyo-nb/thin-plate-spline-motion-model?tab=readme-ov-file#pre-trained-models) section and place it here: `spline_module/models/vox.pth.tar`. To use `find_best_frame`, install `face-alignment`.
+
+For **MRFA**, download the model from [Pretrained models](https://github.com/JialeTao/MRFA/?tab=readme-ov-file#pretrained-models) section and place it here: `mrfa_module/models/`

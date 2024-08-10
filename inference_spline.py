@@ -5,7 +5,7 @@ import yaml
 import tqdm
 from comfy.utils import ProgressBar
 
-from .fomm_inference import find_best_frame
+from .inference_fomm import find_best_frame
 
 from .spline_module.avd_network import AVDNetwork
 from .spline_module.dense_motion import DenseMotionNetwork
