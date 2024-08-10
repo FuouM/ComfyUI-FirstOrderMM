@@ -100,13 +100,16 @@ pip install -r requirements.txt
 pip install face-alignment
 ```
 
-## Model 
+## Models
 
-FOMM currently supporting `vox` and `vox-adv`. Models can and must be manually downloaded from:
+### FOMM and Part Swap
+
+**FOMM**: `vox` and `vox-adv` from
 * [AliaksandrSiarohin/first-order-model](https://github.com/AliaksandrSiarohin/first-order-model)
 * [graphemecluster/first-order-model-demo](https://github.com/graphemecluster/first-order-model-demo)
 
-Part Swap currently supporting Seg-based models and FOMM (`vox` and `vox-adv`) models.
+**Part Swap**
+
 * `vox-5segments`
 * `vox-10segments`
 * `vox-15segments`
@@ -139,13 +142,56 @@ resnet18-5c106cde.pth
 79999_iter.pth
 ```
 
-For **Articulate**, download the model from [Pre-trained checkpoints](https://github.com/snap-research/articulated-animation?tab=readme-ov-file#pre-trained-checkpoints) section and place it here: `articulate_module/models/vox256.pth`
+### Other
 
-For **Spline**, download the model from [Pre-trained models](https://github.com/yoyo-nb/thin-plate-spline-motion-model?tab=readme-ov-file#pre-trained-models) section and place it here: `spline_module/models/vox.pth.tar`. To use `find_best_frame`, install `face-alignment`.
+| Model Arch | File Path | Source |
+|------------|-----------|--------|
+| **Articulate** | `articulate_module/models/vox256.pth` | [Articulated Animation (Pre-trained checkpoints)](https://github.com/snap-research/articulated-animation?tab=readme-ov-file#pre-trained-checkpoints) |
+| **Spline** | `spline_module/models/vox.pth.tar` | [Thin Plate Spline Motion Model (Pre-trained models)](https://github.com/yoyo-nb/thin-plate-spline-motion-model?tab=readme-ov-file#pre-trained-models) |
+| **MRFA** (celebvhq) | `mrfa_module/models/celebvhq.pth` | [MRFA (Pre-trained checkpoints)](https://github.com/JialeTao/MRFA/?tab=readme-ov-file#pretrained-models) |
+| **MRFA** (vox) | `mrfa_module/models/vox.pth` | [MRFA (Pre-trained checkpoints)](https://github.com/JialeTao/MRFA/?tab=readme-ov-file#pretrained-models) |
 
-For **MRFA**, download `MRFACheckpoints.tar.gz` from [Pretrained models](https://github.com/JialeTao/MRFA/?tab=readme-ov-file#pretrained-models) section and decompress it. Inside there should be two files. Place them here: 
+Notes:
+- For **Spline**, to use `find_best_frame`, follow above instructions to install `face-alignment` with its models.
+
+## Credits
 
 ```
-mrfa_module/models/celebvhq.pth
-mrfa_module/models/vox.pth
+@InProceedings{Siarohin_2019_NeurIPS,
+  author={Siarohin, Aliaksandr and Lathuilière, Stéphane and Tulyakov, Sergey and Ricci, Elisa and Sebe, Nicu},
+  title={First Order Motion Model for Image Animation},
+  booktitle = {Conference on Neural Information Processing Systems (NeurIPS)},
+  month = {December},
+  year = {2019}
+}
+```
+
+```
+@InProceedings{Siarohin_2019_NeurIPS,
+  author={Siarohin, Aliaksandr and Lathuilière, Stéphane and Tulyakov, Sergey and Ricci, Elisa and Sebe, Nicu},
+  title={First Order Motion Model for Image Animation},
+  booktitle = {Conference on Neural Information Processing Systems (NeurIPS)},
+  month = {December},
+  year = {2019}
+}
+```
+
+```
+@inproceedings{siarohin2021motion,
+        author={Siarohin, Aliaksandr and Woodford, Oliver and Ren, Jian and Chai, Menglei and Tulyakov, Sergey},
+        title={Motion Representations for Articulated Animation},
+        booktitle = {CVPR},
+        year = {2021}
+}
+```
+
+```
+@inproceedings{
+tao2023learning,
+title={Learning Motion Refinement for Unsupervised Face Animation},
+author={Jiale Tao and Shuhang Gu and Wen Li and Lixin Duan},
+booktitle={Thirty-seventh Conference on Neural Information Processing Systems},
+year={2023},
+url={https://openreview.net/forum?id=m9uHv1Pxq7}
+}
 ```
