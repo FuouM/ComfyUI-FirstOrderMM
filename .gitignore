@@ -1,7 +1,7 @@
 # Stuff
 
-articulate_module/models/*.pth
-spline_module/models/*.tar
+module_articulate/models/*.pth
+module_spline/models/*.tar
 checkpoints/*
 !checkpoints/place_checkpoints_here.txt
 

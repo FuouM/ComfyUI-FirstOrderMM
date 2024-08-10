@@ -5,10 +5,10 @@ import yaml
 from comfy.utils import ProgressBar
 from scipy.spatial import ConvexHull
 
-from .articulate_module.avd_network import AVDNetwork
-from .articulate_module.bg_motion_predictor import BGMotionPredictor
-from .articulate_module.generator import Generator
-from .articulate_module.region_predictor import RegionPredictor
+from .module_articulate.avd_network import AVDNetwork
+from .module_articulate.bg_motion_predictor import BGMotionPredictor
+from .module_articulate.generator import Generator
+from .module_articulate.region_predictor import RegionPredictor
 from .sync_batchnorm.replicate import DataParallelWithCallback
 
 

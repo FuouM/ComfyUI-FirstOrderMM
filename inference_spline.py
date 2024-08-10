@@ -7,10 +7,10 @@ from comfy.utils import ProgressBar
 
 from .inference_fomm import find_best_frame
 
-from .spline_module.avd_network import AVDNetwork
-from .spline_module.dense_motion import DenseMotionNetwork
-from .spline_module.keypoint_detector import KPDetector
-from .spline_module.inpainting_network import InpaintingNetwork
+from .module_spline.avd_network import AVDNetwork
+from .module_spline.dense_motion import DenseMotionNetwork
+from .module_spline.keypoint_detector import KPDetector
+from .module_spline.inpainting_network import InpaintingNetwork
 
 
 def spline_inference(
