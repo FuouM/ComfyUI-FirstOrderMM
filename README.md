@@ -40,6 +40,11 @@ https://github.com/user-attachments/assets/b2948efb-3b44-440b-bff2-dde7b95a9946
 
 ![Workflow Spline](workflows/workflow_spline.png)
 
+### MRFA
+
+[MRFA.json](workflows/MRFA.json)
+
+![Workflow MRFA](workflows/workflow_mrfa.png)
 
 ## Arguments
 
@@ -72,6 +77,10 @@ Doesn't need any
 
 
 ### MRFA
+
+* `model_name`: `celebvhq` or `vox`, which is trained on different datasets
+* `use_relative`: Whether to use relative mode or not (absolute mode). Absolute mode is similar to FOMM's `adapt_movement_scale` set to False
+* `relative_movement`, `relative_jacobian`, `adapt_movement_scale`: Same as FOMM
 
 ## Installation
 
@@ -134,4 +143,9 @@ For **Articulate**, download the model from [Pre-trained checkpoints](https://gi
 
 For **Spline**, download the model from [Pre-trained models](https://github.com/yoyo-nb/thin-plate-spline-motion-model?tab=readme-ov-file#pre-trained-models) section and place it here: `spline_module/models/vox.pth.tar`. To use `find_best_frame`, install `face-alignment`.
 
-For **MRFA**, download the model from [Pretrained models](https://github.com/JialeTao/MRFA/?tab=readme-ov-file#pretrained-models) section and place it here: `mrfa_module/models/`
+For **MRFA**, download `MRFACheckpoints.tar.gz` from [Pretrained models](https://github.com/JialeTao/MRFA/?tab=readme-ov-file#pretrained-models) section and decompress it. Inside there should be two files. Place them here: 
+
+```
+mrfa_module/models/celebvhq.pth
+mrfa_module/models/vox.pth
+```

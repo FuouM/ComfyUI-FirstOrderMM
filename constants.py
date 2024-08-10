@@ -107,3 +107,15 @@ SPLINE_DEFAULT = 'relative'
 
 SPLINE_MODEL_PATH = "module_spline/models/vox.pth.tar"
 SPLINE_CFG_PATH = "module_spline/config/vox-256.yaml"
+
+MRFA_MODEL_NAMES = ["celebvhq", "vox"]
+MRFA_MODEL_PATHS = {
+    "celebvhq": "module_mrfa/models/celebvhq.pth",
+    "vox": "module_mrfa/models/vox.pth",
+}
+MRFA_DEFAULT_MODEL = "celebvhq"
+
+MRFA_CFG_PATHS = {
+    "celebvhq": "module_mrfa/configs/celebvhq.yaml",
+    "vox": "module_mrfa/configs/vox1.yaml",
+}
