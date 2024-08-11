@@ -83,7 +83,7 @@ Doesn't need any
 
 ### MRFA
 
-* `model_name`: `vox256` or `vox256_2Source`, which is trained on (presumably) the `vox256` and `vox256+celebhq` datasets respectively.
+* `model_name`: `vox` or `celebvhq`, which is trained on (presumably) the `vox256` and `celebhq` datasets respectively.
 * `use_relative`: Whether to use relative mode or not (absolute mode). Absolute mode is similar to FOMM's `adapt_movement_scale` set to False
 * `relative_movement`, `relative_jacobian`, `adapt_movement_scale`: Same as FOMM
 
@@ -91,7 +91,7 @@ Doesn't need any
 
 This model takes the longest to run. The full Damedane example takes ~6 minutes
 
-* `model_name`: `celebvhq` or `vox`, which is trained on different datasets
+* `model_name`: `vox256` or `vox256_2Source`, which is trained on (presumably) the `vox256` and `vox256+celebhq` datasets respectively.
 * `use_relative`: Use relative or absolute keypoint coordinates
 * `adapt_scale`: Adapt movement scale based on convex hull of keypoints
 * `find_best_frame`: Same as FOMM
