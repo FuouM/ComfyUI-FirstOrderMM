@@ -9,10 +9,8 @@ Now supports:
 3. [Thin-Plate Spline Motion Model for Image Animation](https://github.com/yoyo-nb/thin-plate-spline-motion-model)
 4. [Learning Motion Refinement for Unsupervised Face Animation](https://github.com/JialeTao/MRFA/)
 5. [Facial Scene Representation Transformer for Face Reenactment](https://github.com/andrerochow/fsrt)
-   
-More will come soon
 
-https://github.com/user-attachments/assets/b2948efb-3b44-440b-bff2-dde7b95a9946
+https://github.com/user-attachments/assets/b090061d-8f12-42c4-b046-d8b0e0a69685
 
 ## Workflow:
 
