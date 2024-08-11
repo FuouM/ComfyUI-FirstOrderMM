@@ -223,7 +223,7 @@ def forward_model(
     max_num_pixels,
     z=None,
 ):
-    render_kwargs = cfg["model"]["decoder_kwargs"]
+    # render_kwargs = cfg["model"]["decoder_kwargs"]
     if len(img_src.shape) < 5:
         img_src = img_src.unsqueeze(1)
     if len(keypoints_src.shape) < 4:

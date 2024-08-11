@@ -1,6 +1,6 @@
 {
   "last_node_id": 7,
-  "last_link_id": 18,
+  "last_link_id": 19,
   "nodes": [
     {
       "id": 2,
@@ -171,7 +171,7 @@
           "hidden": false,
           "paused": false,
           "params": {
-            "filename": "MRFA_00003.mp4",
+            "filename": "MRFA_00015-audio.mp4",
             "subfolder": "",
             "type": "output",
             "format": "video/h264-mp4",
@@ -179,6 +179,86 @@
           }
         }
       }
+    },
+    {
+      "id": 7,
+      "type": "MRFA_Runner",
+      "pos": [
+        779,
+        107
+      ],
+      "size": {
+        "0": 380.4000244140625,
+        "1": 218
+      },
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "source_image",
+          "type": "IMAGE",
+          "link": 13
+        },
+        {
+          "name": "driving_video_input",
+          "type": "IMAGE",
+          "link": 14
+        },
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "link": 19
+        },
+        {
+          "name": "frame_rate",
+          "type": "FLOAT",
+          "link": 18,
+          "widget": {
+            "name": "frame_rate"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "links": [
+            15
+          ],
+          "shape": 3,
+          "slot_index": 0
+        },
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "links": [
+            16
+          ],
+          "shape": 3,
+          "slot_index": 1
+        },
+        {
+          "name": "frame_rate",
+          "type": "FLOAT",
+          "links": [
+            17
+          ],
+          "shape": 3,
+          "slot_index": 2
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MRFA_Runner"
+      },
+      "widgets_values": [
+        "vox",
+        30,
+        true,
+        true,
+        true,
+        false
+      ]
     },
     {
       "id": 3,
@@ -227,7 +307,9 @@
         {
           "name": "audio",
           "type": "AUDIO",
-          "links": [],
+          "links": [
+            19
+          ],
           "shape": 3,
           "slot_index": 2
         },
@@ -268,86 +350,6 @@
           }
         }
       }
-    },
-    {
-      "id": 7,
-      "type": "MRFA_Runner",
-      "pos": [
-        779,
-        107
-      ],
-      "size": {
-        "0": 380.4000244140625,
-        "1": 218
-      },
-      "flags": {},
-      "order": 3,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "source_image",
-          "type": "IMAGE",
-          "link": 13
-        },
-        {
-          "name": "driving_video_input",
-          "type": "IMAGE",
-          "link": 14
-        },
-        {
-          "name": "audio",
-          "type": "AUDIO",
-          "link": null
-        },
-        {
-          "name": "frame_rate",
-          "type": "FLOAT",
-          "link": 18,
-          "widget": {
-            "name": "frame_rate"
-          }
-        }
-      ],
-      "outputs": [
-        {
-          "name": "images",
-          "type": "IMAGE",
-          "links": [
-            15
-          ],
-          "shape": 3,
-          "slot_index": 0
-        },
-        {
-          "name": "audio",
-          "type": "AUDIO",
-          "links": [
-            16
-          ],
-          "shape": 3,
-          "slot_index": 1
-        },
-        {
-          "name": "frame_rate",
-          "type": "FLOAT",
-          "links": [
-            17
-          ],
-          "shape": 3,
-          "slot_index": 2
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "MRFA_Runner"
-      },
-      "widgets_values": [
-        "celebvhq",
-        30,
-        true,
-        true,
-        true,
-        true
-      ]
     }
   ],
   "links": [
@@ -406,6 +408,14 @@
       7,
       3,
       "FLOAT"
+    ],
+    [
+      19,
+      3,
+      2,
+      7,
+      2,
+      "AUDIO"
     ]
   ],
   "groups": [],
