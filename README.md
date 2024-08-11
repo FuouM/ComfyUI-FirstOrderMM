@@ -8,10 +8,9 @@ Now supports:
 2. [Motion Representations for Articulated Animation](https://github.com/snap-research/articulated-animation)
 3. [Thin-Plate Spline Motion Model for Image Animation](https://github.com/yoyo-nb/thin-plate-spline-motion-model)
 4. [Learning Motion Refinement for Unsupervised Face Animation](https://github.com/JialeTao/MRFA/)
+5. [Facial Scene Representation Transformer for Face Reenactment](https://github.com/andrerochow/fsrt)
 
-More will come soon
-
-https://github.com/user-attachments/assets/b2948efb-3b44-440b-bff2-dde7b95a9946
+https://github.com/user-attachments/assets/b090061d-8f12-42c4-b046-d8b0e0a69685
 
 ## Workflow:
 
@@ -46,6 +45,12 @@ https://github.com/user-attachments/assets/b2948efb-3b44-440b-bff2-dde7b95a9946
 
 ![Workflow MRFA](workflows/workflow_mrfa.png)
 
+### FSRT
+
+[FSRT.json](workflows/FSRT.json)
+
+![Workflow FSRT](workflows/workflow_fsrt.png)
+
 ## Arguments
 
 ### FOMM
@@ -78,9 +83,20 @@ Doesn't need any
 
 ### MRFA
 
-* `model_name`: `celebvhq` or `vox`, which is trained on different datasets
+* `model_name`: `vox` or `celebvhq`, which is trained on (presumably) the `vox256` and `celebhq` datasets respectively.
 * `use_relative`: Whether to use relative mode or not (absolute mode). Absolute mode is similar to FOMM's `adapt_movement_scale` set to False
 * `relative_movement`, `relative_jacobian`, `adapt_movement_scale`: Same as FOMM
+
+### FSRT
+
+This model takes the longest to run. The full Damedane example takes ~6 minutes
+
+* `model_name`: `vox256` or `vox256_2Source`, which is trained on (presumably) the `vox256` and `vox256+celebhq` datasets respectively.
+* `use_relative`: Use relative or absolute keypoint coordinates
+* `adapt_scale`: Adapt movement scale based on convex hull of keypoints
+* `find_best_frame`: Same as FOMM
+* `max_num_pixels`: Number of parallel processed pixels. Reduce this value if you run out of GPU memory
+
 
 ## Installation
 
@@ -150,9 +166,13 @@ resnet18-5c106cde.pth
 | **Spline** | `module_articulate/models/vox.pth.tar` | [Thin Plate Spline Motion Model (Pre-trained models)](https://github.com/yoyo-nb/thin-plate-spline-motion-model?tab=readme-ov-file#pre-trained-models) |
 | **MRFA** (celebvhq) | `module_mrfa/models/celebvhq.pth` | [MRFA (Pre-trained checkpoints)](https://github.com/JialeTao/MRFA/?tab=readme-ov-file#pretrained-models) |
 | **MRFA** (vox) | `module_mrfa/models/vox.pth` | [MRFA (Pre-trained checkpoints)](https://github.com/JialeTao/MRFA/?tab=readme-ov-file#pretrained-models) |
+| **FSRT** (kp_detector) | `module_fsrt/models/kp_detector.pt` | [FSRT (Pretrained Checkpoints)](https://github.com/andrerochow/fsrt?tab=readme-ov-file#pretrained-checkpoints) |
+| **FSRT** (vox256) | `module_fsrt/models/vox256.pt` | [FSRT (Pretrained Checkpoints)](https://github.com/andrerochow/fsrt?tab=readme-ov-file#pretrained-checkpoints) |
+| **FSRT** (vox256_2Source) | `module_fsrt/models/vox256_2Source.pt` | [FSRT (Pretrained Checkpoints)](https://github.com/andrerochow/fsrt?tab=readme-ov-file#pretrained-checkpoints) |
 
 Notes:
-- For **Spline**, to use `find_best_frame`, follow above instructions to install `face-alignment` with its models.
+- For **Spline** and **FSRT**, to use `find_best_frame`, follow above instructions to install `face-alignment` with its models.
+- For **FSRT**, you must download `kp_detector`
 
 ## Credits
 
@@ -193,5 +213,14 @@ author={Jiale Tao and Shuhang Gu and Wen Li and Lixin Duan},
 booktitle={Thirty-seventh Conference on Neural Information Processing Systems},
 year={2023},
 url={https://openreview.net/forum?id=m9uHv1Pxq7}
+}
+```
+
+```
+@inproceedings{rochow2024fsrt,
+  title={{FSRT}: Facial Scene Representation Transformer for Face Reenactment from Factorized Appearance, Head-pose, and Facial Expression Features},
+  author={Rochow, Andre and Schwarz, Max and Behnke, Sven},
+  booktitle={IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  year={2024}
 }
 ```

@@ -102,20 +102,37 @@ seg_model_dict = {
 ARTICULATE_MODEL_PATH = "module_articulate/models/vox256.pth"
 ARTICULATE_CFG_PATH = "module_articulate/config/vox256.yaml"
 
-SPLINE_MODES = ['relative', 'standard', 'avd']
-SPLINE_DEFAULT = 'relative'
+SPLINE_MODES = ["relative", "standard", "avd"]
+SPLINE_DEFAULT = "relative"
 
 SPLINE_MODEL_PATH = "module_spline/models/vox.pth.tar"
 SPLINE_CFG_PATH = "module_spline/config/vox-256.yaml"
 
-MRFA_MODEL_NAMES = ["celebvhq", "vox"]
+MRFA_MODEL_NAMES = ["vox", "celebvhq"]
 MRFA_MODEL_PATHS = {
-    "celebvhq": "module_mrfa/models/celebvhq.pth",
     "vox": "module_mrfa/models/vox.pth",
+    "celebvhq": "module_mrfa/models/celebvhq.pth",
 }
-MRFA_DEFAULT_MODEL = "celebvhq"
+MRFA_DEFAULT_MODEL = "vox"
 
 MRFA_CFG_PATHS = {
     "celebvhq": "module_mrfa/configs/celebvhq.yaml",
     "vox": "module_mrfa/configs/vox1.yaml",
+}
+
+FSRT_MODEL_NAMES = [
+    "vox256", "vox256_2Source"
+]
+
+FSRT_DEFAULT_MODEL = "vox256"
+
+FSRT_MODEL_PATHS = {
+    "vox256": "module_fsrt/models/vox256.pt",
+    "vox256_2Source": "module_fsrt/models/vox256_2Source.pt",
+}
+
+FSRT_KP_PATH = "module_fsrt/models/kp_detector.pt"
+FSRT_CFG_PATHS = {
+    "vox256": "module_fsrt/configs/vox256.yaml",
+    "vox256_2Source": "module_fsrt/configs/vox256_2Source.yaml",
 }

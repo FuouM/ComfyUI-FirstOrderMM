@@ -1,7 +1,7 @@
 [project]
 name = "comfyui-firstordermm"
 description = "ComfyUI-native nodes to run First Order Motion Model for Image Animation and its non-diffusion-based successors. [a/https://github.com/AliaksandrSiarohin/first-order-model](https://github.com/AliaksandrSiarohin/first-order-model)"
-version = "1.0.5"
+version = "1.0.6"
 license = { file = "LICENSE" }
 dependencies = ["numpy", "torch", "scipy", "pyyaml", "matplotlib", "einops", "timm"]
 

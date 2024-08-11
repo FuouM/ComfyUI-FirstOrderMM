@@ -12,6 +12,11 @@ import torch
 from .constants import (
     ARTICULATE_CFG_PATH,
     ARTICULATE_MODEL_PATH,
+    FSRT_CFG_PATHS,
+    FSRT_DEFAULT_MODEL,
+    FSRT_KP_PATH,
+    FSRT_MODEL_NAMES,
+    FSRT_MODEL_PATHS,
     MRFA_CFG_PATHS,
     MRFA_DEFAULT_MODEL,
     MRFA_MODEL_NAMES,
@@ -33,6 +38,7 @@ from .constants import (
 from .face_parsing.face_parsing_loader import load_face_parser_model
 from .inference_articulate import articulate_inference
 from .inference_fomm import inference, inference_best_frame, load_checkpoint
+from .inference_fsrt import fsrt_inference
 from .inference_mrfa import mrfa_inference
 from .inference_partswap import load_partswap_checkpoint, partswap_inference
 from .inference_spline import spline_inference
@@ -583,6 +589,100 @@ class MRFA_Runner:
             frame_rate,
         )
 
+class FSRT_Runner:
+    @classmethod
+    def INPUT_TYPES(s):
+        return {
+            "required": {
+                "source_image": ("IMAGE",),
+                "driving_video_input": ("IMAGE",),
+                "model_name": (FSRT_MODEL_NAMES, {"default": FSRT_DEFAULT_MODEL}),
+                "frame_rate": ("FLOAT", {"default": 30.0}),
+                "relative": (
+                    "BOOLEAN",
+                    {"default": False},
+                ),
+                "adapt_scale": (
+                    "BOOLEAN",
+                    {"default": False},
+                ),
+                "find_best_frame": (
+                    "BOOLEAN",
+                    {"default": False},
+                ),
+                "max_num_pixels": (
+                    "INT",
+                    {"default": 65536, "min": 1, "step": 1},
+                ),
+            },
+            "optional": {"audio": ("AUDIO",)},
+        }
+
+    RETURN_TYPES = (
+        "IMAGE",
+        "AUDIO",
+        "FLOAT",
+    )
+    RETURN_NAMES = (
+        "images",
+        "audio",
+        "frame_rate",
+    )
+    FUNCTION = "todo"
+    CATEGORY = "FirstOrderMM"
+
+    def todo(
+        self,
+        source_image,
+        driving_video_input,
+        model_name: str,
+        frame_rate: float,
+        relative: bool,
+        adapt_scale: bool,
+        find_best_frame: bool,
+        max_num_pixels: int,
+        audio=None,
+    ):
+        print(f"{type(source_image)=}")  # [B, H, W, C]
+        print(f"{type(driving_video_input)=}")
+        print(f"{source_image.shape=}")
+        print(f"{driving_video_input.shape=}")
+        print(f"{type(audio)=}")
+        print(base_dir)
+
+        config_path = f"{base_dir}/{FSRT_CFG_PATHS[model_name]}" 
+        checkpoint_path = f"{base_dir}/{FSRT_MODEL_PATHS[model_name]}"
+
+        source_image = reshape_image(source_image, (256, 256))
+        driving_video = reshape_image(driving_video_input, (256, 256)).unsqueeze(0)
+        driving_video = driving_video.permute(0, 2, 1, 3, 4)
+
+        print("After reshaping")
+        print(f"{source_image.shape=}")
+        print(f"{driving_video.shape=}")
+        params = {
+            "source_image": source_image,
+            "driving_video": driving_video,
+            "config_path": config_path,
+            "checkpoint_path": checkpoint_path,
+            "keypoint_path": f"{base_dir}/{FSRT_KP_PATH}",
+            "relative": relative,
+            "adapt_scale": adapt_scale,
+            "find_best_frame": find_best_frame,
+            "max_num_pixels": max_num_pixels,
+        }
+
+        predictions = fsrt_inference(**params)
+
+        # output_images = out_video(predictions)
+        print(f"{predictions[0].shape=}")
+        output_images = torch.cat(predictions, dim=0)
+        
+        return (
+            output_images,
+            audio,
+            frame_rate,
+        )
 
 def serialize_integers(int_list):
     return "_".join(map(str, int_list))

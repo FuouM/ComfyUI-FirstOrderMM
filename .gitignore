@@ -3,6 +3,7 @@
 module_articulate/models/*.pth
 module_spline/models/*.tar
 module_mrfa/models/*.pth
+module_fsrt/models/*.pt
 checkpoints/*
 !checkpoints/place_checkpoints_here.txt
 

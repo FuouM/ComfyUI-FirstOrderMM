@@ -1,6 +1,6 @@
 {
-  "last_node_id": 7,
-  "last_link_id": 19,
+  "last_node_id": 8,
+  "last_link_id": 26,
   "nodes": [
     {
       "id": 2,
@@ -21,7 +21,7 @@
           "name": "IMAGE",
           "type": "IMAGE",
           "links": [
-            13
+            20
           ],
           "shape": 3,
           "slot_index": 0
@@ -67,7 +67,7 @@
           "name": "fps🟦",
           "type": "FLOAT",
           "links": [
-            18
+            26
           ],
           "shape": 3,
           "slot_index": 0
@@ -120,12 +120,12 @@
         {
           "name": "images",
           "type": "IMAGE",
-          "link": 15
+          "link": 21
         },
         {
           "name": "audio",
           "type": "AUDIO",
-          "link": 16
+          "link": 23
         },
         {
           "name": "meta_batch",
@@ -140,7 +140,7 @@
         {
           "name": "frame_rate",
           "type": "FLOAT",
-          "link": 17,
+          "link": 25,
           "widget": {
             "name": "frame_rate"
           }
@@ -160,7 +160,7 @@
       "widgets_values": {
         "frame_rate": 8,
         "loop_count": 0,
-        "filename_prefix": "MRFA",
+        "filename_prefix": "FSRT",
         "format": "video/h264-mp4",
         "pix_fmt": "yuv420p",
         "crf": 0,
@@ -171,7 +171,7 @@
           "hidden": false,
           "paused": false,
           "params": {
-            "filename": "MRFA_00015-audio.mp4",
+            "filename": "FSRT_00005-audio.mp4",
             "subfolder": "",
             "type": "output",
             "format": "video/h264-mp4",
@@ -179,86 +179,6 @@
           }
         }
       }
-    },
-    {
-      "id": 7,
-      "type": "MRFA_Runner",
-      "pos": [
-        779,
-        107
-      ],
-      "size": {
-        "0": 380.4000244140625,
-        "1": 218
-      },
-      "flags": {},
-      "order": 3,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "source_image",
-          "type": "IMAGE",
-          "link": 13
-        },
-        {
-          "name": "driving_video_input",
-          "type": "IMAGE",
-          "link": 14
-        },
-        {
-          "name": "audio",
-          "type": "AUDIO",
-          "link": 19
-        },
-        {
-          "name": "frame_rate",
-          "type": "FLOAT",
-          "link": 18,
-          "widget": {
-            "name": "frame_rate"
-          }
-        }
-      ],
-      "outputs": [
-        {
-          "name": "images",
-          "type": "IMAGE",
-          "links": [
-            15
-          ],
-          "shape": 3,
-          "slot_index": 0
-        },
-        {
-          "name": "audio",
-          "type": "AUDIO",
-          "links": [
-            16
-          ],
-          "shape": 3,
-          "slot_index": 1
-        },
-        {
-          "name": "frame_rate",
-          "type": "FLOAT",
-          "links": [
-            17
-          ],
-          "shape": 3,
-          "slot_index": 2
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "MRFA_Runner"
-      },
-      "widgets_values": [
-        "vox",
-        30,
-        true,
-        true,
-        true,
-        false
-      ]
     },
     {
       "id": 3,
@@ -293,7 +213,7 @@
           "name": "IMAGE",
           "type": "IMAGE",
           "links": [
-            14
+            22
           ],
           "shape": 3,
           "slot_index": 0
@@ -308,7 +228,7 @@
           "name": "audio",
           "type": "AUDIO",
           "links": [
-            19
+            24
           ],
           "shape": 3,
           "slot_index": 2
@@ -350,6 +270,86 @@
           }
         }
       }
+    },
+    {
+      "id": 8,
+      "type": "FSRT_Runner",
+      "pos": [
+        762,
+        65
+      ],
+      "size": {
+        "0": 380.4000244140625,
+        "1": 218
+      },
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "source_image",
+          "type": "IMAGE",
+          "link": 20
+        },
+        {
+          "name": "driving_video_input",
+          "type": "IMAGE",
+          "link": 22
+        },
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "link": 24
+        },
+        {
+          "name": "frame_rate",
+          "type": "FLOAT",
+          "link": 26,
+          "widget": {
+            "name": "frame_rate"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "links": [
+            21
+          ],
+          "shape": 3,
+          "slot_index": 0
+        },
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "links": [
+            23
+          ],
+          "shape": 3,
+          "slot_index": 1
+        },
+        {
+          "name": "frame_rate",
+          "type": "FLOAT",
+          "links": [
+            25
+          ],
+          "shape": 3,
+          "slot_index": 2
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "FSRT_Runner"
+      },
+      "widgets_values": [
+        "vox256",
+        30,
+        false,
+        false,
+        false,
+        65536
+      ]
     }
   ],
   "links": [
@@ -362,60 +362,60 @@
       "VHS_VIDEOINFO"
     ],
     [
-      13,
+      20,
       2,
       0,
-      7,
+      8,
       0,
       "IMAGE"
     ],
     [
-      14,
-      3,
-      0,
-      7,
-      1,
-      "IMAGE"
-    ],
-    [
-      15,
-      7,
+      21,
+      8,
       0,
       6,
       0,
       "IMAGE"
     ],
     [
-      16,
-      7,
+      22,
+      3,
+      0,
+      8,
+      1,
+      "IMAGE"
+    ],
+    [
+      23,
+      8,
       1,
       6,
       1,
       "AUDIO"
     ],
     [
-      17,
-      7,
+      24,
+      3,
+      2,
+      8,
+      2,
+      "AUDIO"
+    ],
+    [
+      25,
+      8,
       2,
       6,
       4,
       "FLOAT"
     ],
     [
-      18,
+      26,
       5,
       0,
-      7,
+      8,
       3,
       "FLOAT"
-    ],
-    [
-      19,
-      3,
-      2,
-      7,
-      2,
-      "AUDIO"
     ]
   ],
   "groups": [],
@@ -424,8 +424,8 @@
     "ds": {
       "scale": 1,
       "offset": [
-        -17,
-        60
+        -23,
+        68
       ]
     }
   },
