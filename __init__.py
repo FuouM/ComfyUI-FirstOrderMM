@@ -6,7 +6,8 @@ from .run import (
     FOMM_Seg15Chooser,
     Articulate_Runner,
     Spline_Runner,
-    MRFA_Runner
+    MRFA_Runner,
+    FSRT_Runner
 )
 
 NODE_CLASS_MAPPINGS = {
@@ -18,6 +19,7 @@ NODE_CLASS_MAPPINGS = {
     "Articulate_Runner": Articulate_Runner,
     "Spline_Runner": Spline_Runner,
     "MRFA_Runner": MRFA_Runner,
+    "FSRT_Runner": FSRT_Runner,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
@@ -29,6 +31,7 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "Articulate_Runner": "Articulate Runner",
     "Spline_Runner": "Spline Runner",
     "MRFA_Runner": "MRFA Runner",
+    "FSRT_Runner": "FSRT Runner",
 }
 
 
