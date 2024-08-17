@@ -3,7 +3,7 @@ import math
 import torch
 import torch.nn.functional as F
 from einops import rearrange
-from timm.models.layers.weight_init import trunc_normal_
+from timm.models.layers import trunc_normal_
 from torch import nn
 
 from .generator import OcclusionAwareGenerator
